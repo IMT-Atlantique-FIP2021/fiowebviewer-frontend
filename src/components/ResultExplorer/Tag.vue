@@ -1,6 +1,7 @@
 <template>
-    <div class="bg-gray-300 rounded-full flex-none py-1 px-2 my-1 font-bold text-black text-xs">
-        {{ text }}
+    <div class="flex flex-row flex-none bg-gray-300 rounded-full px-2 my-1 items-center">
+        <svg class="feather feather-tag w-4 pr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        <div class="font-bold text-black text-xs">{{ text }}</div>
     </div>
 </template>
 
