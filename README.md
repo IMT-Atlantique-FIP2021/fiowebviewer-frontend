@@ -12,12 +12,20 @@
 
 ## Installation & Usage
 
-See the [**Documentation**][0] for an introduction, usage information, and examples.
+```shell
+$ npm install
+...
+$ npm run dev
+...
+```
+
+<!-- See the [**Documentation**][0] for an introduction, usage information, and examples. -->
 
 ## Built With
 
 - Frontend
   - [Vue][1] (JavaScript Framework)
+  - [Vue Router][7]
   - [Tailwindcss][2] (CSS Framework)
 - Backend
   - [Flask][3] (Python Framework) | _Moving to [FastAPI][4]?_
@@ -34,6 +42,7 @@ See the [**Documentation**][0] for an introduction, usage information, and examp
 To read:
 
 - [Vue and Flask](https://stackabuse.com/single-page-apps-with-vue-js-and-flask-setting-up-vue-js/)
+- [Vue 3 Router](https://www.vuemastery.com/blog/vue-router-a-tutorial-for-vue-3/)
 
 To sort:
 
@@ -52,3 +61,4 @@ To sort:
 [4]: https://fastapi.tiangolo.com/
 [5]: https://github.com/vitejs/vite
 [6]: https://feathericons.com/
+[7]: https://router.vuejs.org/
