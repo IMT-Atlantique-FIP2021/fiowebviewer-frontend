@@ -17,17 +17,25 @@ See the [**Documentation**][0] for an introduction, usage information, and examp
 ## Built With
 
 - Frontend
-  - React
-  - [Semantic UI][2] ([Docs][3])
+  - [Vue][1] (JavaScript Framework)
+  - [Tailwindcss][2] (CSS Framework)
 - Backend
-  - Python 3
-  - Flask Framework
+  - [Flask][3] (Python Framework) | _Moving to [FastAPI][4]?_
 - Tools
-  - yarn
   - virtualenv
-  - create-react-app
+  - npm
+  - [Vite][5] (Frontend boilerplate)
+  - [Feather][6] (SVG Icons)
+- Browser dev tools
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
 
 # Ideas
+
+To read:
+
+- [Vue and Flask](https://stackabuse.com/single-page-apps-with-vue-js-and-flask-setting-up-vue-js/)
+
+To sort:
 
 - [Bootstrap table examples](https://examples.bootstrap-table.com/)
 - [Getting started: Flask+React](https://blog.learningdollars.com/2019/11/29/how-to-serve-a-reactapp-with-a-flask-server/)
@@ -37,6 +45,10 @@ See the [**Documentation**][0] for an introduction, usage information, and examp
 
 <!-- URL Index -->
 
-[0]: #
-[2]: https://github.com/Semantic-Org/Semantic-UI-React
-[3]: https://react.semantic-ui.com/
+[0]: ./docs/project_setup.md
+[1]: https://vuejs.org/
+[2]: https://tailwindcss.com/docs
+[3]: https://flask.palletsprojects.com/en/1.1.x/
+[4]: https://fastapi.tiangolo.com/
+[5]: https://github.com/vitejs/vite
+[6]: https://feathericons.com/
