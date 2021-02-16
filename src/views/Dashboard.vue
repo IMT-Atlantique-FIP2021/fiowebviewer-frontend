@@ -35,7 +35,7 @@
             class="group flex space-x-2 pl-4 items-center cursor-pointer text-blue-600"
           >
             <svg
-              class="feather feather-list opacity-50 group-hover:opacity-100"
+              class="feather feather-list"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
