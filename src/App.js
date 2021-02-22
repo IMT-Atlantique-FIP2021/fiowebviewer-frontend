@@ -89,7 +89,7 @@ function App() {
           </div>
         </div>
         <div className="flex-auto dark:bg-gray-600 p-4">
-          <div class="mb-3 pb-1 font-semibold text-2xl border-b-2 dark:text-white">
+          <div className="mb-3 pb-1 font-semibold text-2xl border-b-2 dark:text-white">
             Job Browser
           </div>
           <ResultExplorerTable resultList={ResultListTest} />

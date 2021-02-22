@@ -10,8 +10,8 @@ function ResultExplorerLine(props) {
       <td className="border px-4 text-left truncate">{ props.result.name }</td>
       <td className="border px-4">
         <div className="flex flex-row justify-start space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-ovh_blue scrollbar-track-gray-200">
-          { props.result.tags.map((tag) => (
-              <ResultExplorerTag text={ tag } />
+          { props.result.tags.map((tag, index) => (
+              <ResultExplorerTag key={index+'_'+tag} text={ tag } />
           )) }
         </div>
       </td>

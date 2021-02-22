@@ -14,7 +14,7 @@ function ResultExplorerTable(props) {
       </tr>
 
       { props.resultList.map((result) => (
-        <ResultExplorerLine result={result} />
+        <ResultExplorerLine key={ result.id } result={result} />
       )) }
 
     </table>
