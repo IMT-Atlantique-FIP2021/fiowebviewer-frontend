@@ -1,7 +1,7 @@
 <!-- Logo -->
 <p align="center">
   <a href="#">
-    <img width="128" src="./assets/favicon.png">
+    <img width="128" src="./public/logo192.png">
   </a>
 </p>
 
