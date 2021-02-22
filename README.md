@@ -7,7 +7,7 @@
 
 <!-- Name -->
 <h1 align="center">
-  <a href="#">FIOWebViewer</a>
+  <a href="#">FIOWebViewer - ARCHIVE</a>
 </h1>
 
 ## Installation & Usage
