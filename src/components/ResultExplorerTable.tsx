@@ -1,6 +1,11 @@
 import ResultExplorerLine from "./ResultExplorerLine";
+import { Result } from "./ResultExplorerLine";
 
-function ResultExplorerTable(props) {
+type TableProps = {
+  results: Result[];
+};
+
+function ResultExplorerTable(props: TableProps) {
   return (
     <table className="shadow-md bg-white table-fixed w-full">
       <tr className="bg-ovh_blue text-white text-left border">
@@ -13,10 +18,9 @@ function ResultExplorerTable(props) {
         <th className="py-4 w-32 text-center">Actions</th>
       </tr>
 
-      { props.resultList.map((result) => (
-        <ResultExplorerLine key={ result.id } result={result} />
-      )) }
-
+      {props.results.map((result) => (
+        <ResultExplorerLine key={result.id} result={result} />
+      ))}
     </table>
   );
 }
