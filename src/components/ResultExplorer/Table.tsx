@@ -1,11 +1,11 @@
-import ResultExplorerLine from "./ResultExplorerLine";
-import { Result } from "./ResultExplorerLine";
+import ResultLine from "./Line";
+import { Result } from "./Line";
 
 type TableProps = {
   results: Result[];
 };
 
-function ResultExplorerTable(props: TableProps) {
+function ResultTable(props: TableProps) {
   return (
     <table className="shadow-md bg-white table-fixed w-full">
       <tr className="bg-ovh_blue text-white text-left border">
@@ -19,10 +19,10 @@ function ResultExplorerTable(props: TableProps) {
       </tr>
 
       {props.results.map((result) => (
-        <ResultExplorerLine key={result.id} result={result} />
+        <ResultLine key={result.id} result={result} />
       ))}
     </table>
   );
 }
 
-export default ResultExplorerTable;
+export default ResultTable;

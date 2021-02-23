@@ -1,5 +1,5 @@
 import { PlusCircle, XCircle } from "react-feather";
-import ResultExplorerTag from "./ResultExplorerTag";
+import ResultTag from "./Tag";
 
 type LineProps = {
   result: Result;
@@ -12,7 +12,7 @@ export type Result = {
   submitted_at: string;
 };
 
-function ResultExplorerLine(props: LineProps) {
+function ResultLine(props: LineProps) {
   return (
     <tr>
       <td className="border py-2 text-center">
@@ -22,7 +22,7 @@ function ResultExplorerLine(props: LineProps) {
       <td className="border px-4">
         <div className="flex flex-row justify-start space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-ovh_blue scrollbar-track-gray-200">
           {props.result.tags.map((tag, index) => (
-            <ResultExplorerTag key={index + "_" + tag} text={tag} />
+            <ResultTag key={index + "_" + tag} text={tag} />
           ))}
         </div>
       </td>
@@ -41,4 +41,4 @@ function ResultExplorerLine(props: LineProps) {
   );
 }
 
-export default ResultExplorerLine;
+export default ResultLine;
