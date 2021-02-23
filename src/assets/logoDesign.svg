@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110px" height="110px">
+    <g>
+        <title>BACKGROUND</title>
+        <rect width="100%" height="100%" fill="#010E9B"/>
+    </g>
+
+    <g transform="translate(15,15)">
+        <title>LOGO</title>
+        <polygon points="0,0 0,70 70,0 20,20" fill="white"/>
+        <polygon points="80,80 80,10 10,80 60,60" fill="white"/>
+    </g>
+
+    <!-- <line x1="0" x2="120" y1="0" y2="120" stroke="red" opacity=".2"/> -->
+    <!-- <line x1="110" x2="0" y1="0" y2="110" stroke="red" opacity=".2"/> -->
+    <!-- <line x1="100" x2="0" y1="0" y2="100" stroke="red" opacity=".2"/> -->
+    <!-- <line x1="120" x2="0" y1="0" y2="120" stroke="red" opacity=".2"/> -->
+</svg>
