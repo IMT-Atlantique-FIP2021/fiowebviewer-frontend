@@ -10,6 +10,7 @@ import {
   Trash,
 } from "react-feather";
 import ResultExplorerTable from "./components/ResultExplorerTable";
+
 import ResultListTest from "./assets/resultList.json";
 
 function App() {
@@ -92,7 +93,7 @@ function App() {
           <div className="mb-3 pb-1 font-semibold text-2xl border-b-2 dark:text-white">
             Job Browser
           </div>
-          <ResultExplorerTable resultList={ResultListTest} />
+          <ResultExplorerTable results={ResultListTest} />
         </div>
       </div>
     </div>
