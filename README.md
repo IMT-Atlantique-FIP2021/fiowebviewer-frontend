@@ -1,13 +1,13 @@
 <!-- Logo -->
 <p align="center">
-  <a href="#">
+  <a href="https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/">
     <img width="128" src="./public/favicon.min.svg">
   </a>
 </p>
 
 <!-- Name -->
 <h1 align="center">
-  <a href="#">FIOWebViewer</a>
+  <a href="https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/"><b>FLEX</b> Flexible I/O Explorer</a>
 </h1>
 
 ## Installation & Usage
@@ -22,6 +22,10 @@ $ npm start
 > If error start showing in console about memory, check [issue #12](https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/issues/12).
 
 <!-- See the [**Documentation**][ProjectDoc] for an introduction, usage information, and examples. -->
+
+## Screenshots
+
+![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.png)
 
 ## Built With
 
@@ -39,11 +43,6 @@ $ npm start
   - [React DevTools][ReactDevTool]
 
 # Ideas
-
-To read:
-
-- [Vue and Flask](https://stackabuse.com/single-page-apps-with-vue-js-and-flask-setting-up-vue-js/)
-- [Vue 3 Router](https://www.vuemastery.com/blog/vue-router-a-tutorial-for-vue-3/)
 
 To sort:
 
