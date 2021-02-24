@@ -28,18 +28,12 @@ function ContentElement(props: ContentElementProps) {
     return (
         <div className="container mx-auto px-5">
             <div className="rounded shadow-lg bg-white">
-                <div className="bg-custom-ovh-sec-light h-1 rounded-t"/>
+                <div className="bg-blue-ovh-light h-1 rounded-t" />
                 <div className="px-5 py-3 border-b">
                     <div className="text-xl">{props.title}</div>
                 </div>
-                {props.contentChildren}
+                <div className="pb-10">{props.contentChildren}</div>
             </div>
         </div>
     );
 }
-
-// function ElementHeader(params:any) {
-//     return (
-
-//     );
-// }
