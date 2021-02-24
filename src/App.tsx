@@ -1,9 +1,9 @@
 // import Dashboard from "./views/Dashboard";
-import DashboardLayout from './views/Layout';
+import Dashboard from './views/Dashboard';
 
 function App() {
   return (
-    <DashboardLayout/>
+    <Dashboard/>
   );
 }
 
