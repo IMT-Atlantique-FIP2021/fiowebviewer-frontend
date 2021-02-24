@@ -3,17 +3,11 @@ import ResultListTest from "../assets/resultList.json";
 import ResultExplorer from "./ResultExplorer";
 
 export default function Content() {
-    const ResultList = (
-        <div>
-            <ResultExplorer results={ResultListTest} />
-        </div>
-    );
-
     return (
-        <div id="CONTENT" className="my-8">
+        <div id="CONTENT" className="my-8 flex flex-col space-y-5">
             <ContentElement
                 title="Result Explorer"
-                contentChildren={ResultList}
+                contentChildren={<ResultExplorer results={ResultListTest} />}
             />
         </div>
     );
