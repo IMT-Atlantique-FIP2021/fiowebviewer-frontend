@@ -4,13 +4,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ovh_blue: '#010e9b',
-        fip_pink: '#ffd1dc',
+        blue: {
+          'ovh-dark': '#010E9B',
+          'ovh-light': '#2563EB',
+        },
+        pink: {
+          'fip': '#FFD1DC'
+        }
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['hover'],
+    }
   },
   plugins: [
     require('@tailwindcss/forms'), 
