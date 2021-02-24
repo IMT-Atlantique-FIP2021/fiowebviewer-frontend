@@ -1,7 +1,7 @@
 <!-- Logo -->
 <p align="center">
   <a href="#">
-    <img width="128" src="./public/logo192.png">
+    <img width="128" src="./public/favicon.min.svg">
   </a>
 </p>
 
@@ -15,27 +15,28 @@
 ```shell
 $ npm install
 ...
-$ npm run dev
+$ npm start
 ...
 ```
 
-<!-- See the [**Documentation**][0] for an introduction, usage information, and examples. -->
+> If error start showing in console about memory, check [issue #12](https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/issues/12).
+
+<!-- See the [**Documentation**][ProjectDoc] for an introduction, usage information, and examples. -->
 
 ## Built With
 
 - Frontend
-  - [Vue][1] (JavaScript Framework)
-  - [Vue Router][7]
-  - [Tailwindcss][2] (CSS Framework)
+  - [React][ReactDoc] (JavaScript Framework)
+  - [Tailwindcss][TailwindDoc] (CSS Framework)
 - Backend
-  - [Flask][3] (Python Framework) | _Moving to [FastAPI][4]?_
+  - [Flask][FlaskDoc] (Python Framework) | _Moving to [FastAPI][FastAPIDoc]?_
 - Tools
   - virtualenv
   - npm
-  - [Vite][5] (Frontend boilerplate)
-  - [Feather][6] (SVG Icons)
+  - [Create-React-App][CRADoc] (Frontend boilerplate)
+  - [Feather][FeatherIcons] (SVG Icons)
 - Browser dev tools
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [React DevTools][ReactDevTool]
 
 # Ideas
 
@@ -48,17 +49,14 @@ To sort:
 
 - [Bootstrap table examples](https://examples.bootstrap-table.com/)
 - [Getting started: Flask+React](https://blog.learningdollars.com/2019/11/29/how-to-serve-a-reactapp-with-a-flask-server/)
-- (Outdated!) [Blog post | The Ultimate Flask Front-End](https://realpython.com/the-ultimate-flask-front-end/)
-- [Example project | semantic-ui-react-todos](https://github.com/wyc/semantic-ui-react-todos)
-- [Lib | Feather icons](https://feathericons.com/?query=mini)
 
 <!-- URL Index -->
 
-[0]: ./docs/project_setup.md
-[1]: https://vuejs.org/
-[2]: https://tailwindcss.com/docs
-[3]: https://flask.palletsprojects.com/en/1.1.x/
-[4]: https://fastapi.tiangolo.com/
-[5]: https://github.com/vitejs/vite
-[6]: https://feathericons.com/
-[7]: https://router.vuejs.org/
+[ProjectDoc]: ./docs/project_setup.md
+[ReactDoc]: https://reactjs.org/docs/getting-started.html
+[TailwindDoc]: https://tailwindcss.com/docs
+[FlaskDoc]: https://flask.palletsprojects.com/en/1.1.x/
+[FastAPIDoc]: https://fastapi.tiangolo.com/
+[CRADoc]: https://github.com/vitejs/vite
+[FeatherIcons]: https://feathericons.com/
+[ReactDevTool]: https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
