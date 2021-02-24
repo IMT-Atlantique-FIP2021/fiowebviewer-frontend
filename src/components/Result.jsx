@@ -132,7 +132,7 @@ class ChevronToggle extends Component {
     }
 
     onClickHandler() {
-        console.log("CLICK ON BUTTON");
+        console.log("CLICK ON BUTTO");
         this.props.dropdownState.dropdownTableHandler();
     }
 

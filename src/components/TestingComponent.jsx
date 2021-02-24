@@ -6,16 +6,16 @@ export default function TestingComponent() {
         <div className="mt-5">
             <div className="container mx-auto px-5">
                 <div className="flex flex-row space-x-5">
-                    <TableParent className="w-full flex-auto"/>
-                    <TableParent className="w-full flex-auto"/>
-                    <TableParent className="w-full flex-auto"/>
+                    <Table className="w-full flex-auto" name="Menu 1"/>
+                    <Table className="w-full flex-auto" name="Menu 3"/>
+                    <Table className="w-full flex-auto" name="Menu 2"/>
                 </div>
             </div>
         </div>
     );
 }
 
-class TableParent extends Component {
+class Table extends Component {
     constructor(props) {
         super(props);
         this.onVisibilityChange = this.onVisibilityChange.bind(this)
@@ -30,7 +30,7 @@ class TableParent extends Component {
         return (
             <div className="flex flex-col">
                 <div className="bg-red-500 w-full">
-                    FIRST
+                    {this.props.name}
                     <TableHeader isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
                 </div>
                 {
@@ -72,4 +72,19 @@ class TableHeader extends Component {
 
         
     }
+}
+
+
+
+
+
+function TableTestnameHeader(props) {
+    return (
+        <tr className="bg-green-600 text-white text-left border">
+            <th className="text-center">
+            </th>
+            <th className="py-4 px-4 w-64">Job Name</th>
+            <th className="py-4 px-4">Tags</th>
+        </tr>
+    )
 }
