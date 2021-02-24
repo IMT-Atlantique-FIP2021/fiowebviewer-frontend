@@ -1,12 +1,16 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: 'class',
+  darkMode: 'class', // 'media' or 'class'
   theme: {
     extend: {
       colors: {
         blue: {
           'ovh-dark': '#010E9B',
           'ovh-light': '#2563EB',
+        },
+        custom: {
+          'ovh-sec-dark': '#9B8E01',
+          'ovh-sec-light': '#EBAD25',
         },
         pink: {
           'fip': '#FFD1DC'
