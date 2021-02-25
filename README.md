@@ -31,6 +31,7 @@ $ npm start
 
 - Frontend
   - [React][ReactDoc] (JavaScript Framework)
+    - [React Router][ReactP_Router]
   - [Tailwindcss][TailwindDoc] (CSS Framework)
     - [tailwind-scrollbar][TWP_scroll] (plugin)
 - Backend
@@ -61,3 +62,4 @@ To sort:
 [FeatherIcons]: https://feathericons.com/
 [ReactDevTool]: https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
 [TWP_scroll]: https://github.com/adoxography/tailwind-scrollbar
+[ReactP_Router]: https://reactrouter.com/web/example/basic
