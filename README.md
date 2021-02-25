@@ -32,6 +32,7 @@ $ npm start
 - Frontend
   - [React][ReactDoc] (JavaScript Framework)
   - [Tailwindcss][TailwindDoc] (CSS Framework)
+    - [tailwind-scrollbar][TWP_scroll] (plugin)
 - Backend
   - [Flask][FlaskDoc] (Python Framework) | _Moving to [FastAPI][FastAPIDoc]?_
 - Tools
@@ -59,3 +60,4 @@ To sort:
 [CRADoc]: https://github.com/vitejs/vite
 [FeatherIcons]: https://feathericons.com/
 [ReactDevTool]: https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
+[TWP_scroll]: https://github.com/adoxography/tailwind-scrollbar

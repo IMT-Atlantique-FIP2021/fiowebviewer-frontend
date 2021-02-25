@@ -1,10 +1,12 @@
-// import Dashboard from "./views/Dashboard";
-import Dashboard from './views/Dashboard';
+import { BrowserRouter } from "react-router-dom";
+import Dashboard from "./views/Dashboard";
 
 function App() {
-  return (
-    <Dashboard/>
-  );
+    return (
+        <BrowserRouter>
+            <Dashboard />
+        </BrowserRouter>
+    );
 }
 
 export default App;
