@@ -6,7 +6,11 @@ export default function TestingComponent() {
         <div className="mt-5">
             <div className="container mx-auto px-5">
                 <div className="flex flex-row space-x-5">
-                    <Table className="w-full flex-auto" tableName="Menu 1" tableLines={TableMenu1Lines()}/>
+                    {/* <Table className="w-full flex-auto" tableName="Menu 1" tableLines={TableMenu1Lines()}/> */}
+                    <Table className="w-full flex-auto" tableHeader={<TableHeader1/>}>
+                        <Table tableName="Sous Menu1" subMenu={true} tableHeader={<TableHeader1/>}>LINE1</Table>
+                        <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableHeader1/>}>LINE2</Table>
+                    </Table>
                 </div>
             </div>
         </div>
@@ -24,16 +28,19 @@ class Table extends Component {
         this.setState({ isReduced: !this.state.isReduced });
     }
 
+
     render() {
+        const classTableHeader = (this.props.subMenu ? "bg-green-500" : "bg-red-500") + "w-full";
+        
         return (
             <div className="flex flex-col">
-                <div className="bg-red-500 w-full">
-                    <TableHeader tableName={this.props.tableName} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
+                <div className={classTableHeader} >
+                    <TableHeader tableHeader={this.props.tableHeader} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
                 </div>
                 {
                     !this.state.isReduced && 
                     <div className="bg-blue-500 w-full">
-                        {this.props.tableLines}
+                        {this.props.children}
                     </div>
                 }
             </div>
@@ -57,20 +64,20 @@ class TableHeader extends Component {
 
         if (isReduced) {
             return (
-                <div>
+                <div className="flex">
                 <button onClick={this.onClickHandler} className={btnClass}>
                     <ChevronRight/>
                 </button>
-                {this.props.tableName}
+                {this.props.tableHeader}
                 </div>
             );
         } else {
             return (
-                <div>
-                <button onClick={this.onClickHandler} className={btnClass}>
-                    <ChevronDown/>
-                </button>
-                {this.props.tableName}
+                <div className="flex">
+                    <button onClick={this.onClickHandler} className={btnClass}>
+                        <ChevronDown/>
+                        {this.props.tableHeader}
+                    </button>
                 </div>
             );
         }
@@ -79,7 +86,11 @@ class TableHeader extends Component {
 }
 
 
-
+function TableHeader1(props) {
+    return(
+        <div>{props.title || "Default Header"}</div>
+    );
+}
 
 
 class TableLine extends Component {
@@ -120,12 +131,3 @@ class TableLine extends Component {
     }
 }
 
-
-function TableMenu1Lines(props) {
-    return(
-        <div>
-        <TableLine className="w-full flex-auto" lineName="SousMenu1" />
-        <TableLine className="w-full flex-auto" lineName="SousMenu2" />
-        </div>
-    );
-}
