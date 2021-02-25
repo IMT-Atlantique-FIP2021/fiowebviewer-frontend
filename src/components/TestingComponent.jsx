@@ -6,9 +6,7 @@ export default function TestingComponent() {
         <div className="mt-5">
             <div className="container mx-auto px-5">
                 <div className="flex flex-row space-x-5">
-                    <Table className="w-full flex-auto" name="Menu 1"/>
-                    <Table className="w-full flex-auto" name="Menu 3"/>
-                    <Table className="w-full flex-auto" name="Menu 2"/>
+                    <Table className="w-full flex-auto" tableName="Menu 1" tableLines={TableMenu1Lines()}/>
                 </div>
             </div>
         </div>
@@ -30,12 +28,13 @@ class Table extends Component {
         return (
             <div className="flex flex-col">
                 <div className="bg-red-500 w-full">
-                    {this.props.name}
-                    <TableHeader isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
+                    <TableHeader tableName={this.props.tableName} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
                 </div>
                 {
                     !this.state.isReduced && 
-                    <div className="bg-blue-500 w-full">SECOND</div>
+                    <div className="bg-blue-500 w-full">
+                        {this.props.tableLines}
+                    </div>
                 }
             </div>
         )
@@ -58,15 +57,62 @@ class TableHeader extends Component {
 
         if (isReduced) {
             return (
+                <div>
                 <button onClick={this.onClickHandler} className={btnClass}>
                     <ChevronRight/>
                 </button>
+                {this.props.tableName}
+                </div>
             );
         } else {
             return (
+                <div>
                 <button onClick={this.onClickHandler} className={btnClass}>
                     <ChevronDown/>
                 </button>
+                {this.props.tableName}
+                </div>
+            );
+        }
+
+    }
+}
+
+
+
+
+
+class TableLine extends Component {
+    constructor(props) {
+        super(props);
+        this.onClickHandler = this.onClickHandler.bind(this)
+    }
+
+    onClickHandler() {
+        this.setState({ isReduced: !this.state.isReduced });
+    }
+
+    render() {
+        const btnClass = "align-bottom";
+        const isReduced = this.props.isReduced;
+
+        if (isReduced) {
+            return (
+                <div>
+                <button onClick={this.onClickHandler} className={btnClass}>
+                    <ChevronRight/>
+                </button>
+                {this.props.lineName}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                <button onClick={this.onClickHandler} className={btnClass}>
+                    <ChevronDown/>
+                </button>
+                {this.props.lineName}
+                </div>
             );
         }
 
@@ -75,16 +121,11 @@ class TableHeader extends Component {
 }
 
 
-
-
-
-function TableTestnameHeader(props) {
-    return (
-        <tr className="bg-green-600 text-white text-left border">
-            <th className="text-center">
-            </th>
-            <th className="py-4 px-4 w-64">Job Name</th>
-            <th className="py-4 px-4">Tags</th>
-        </tr>
-    )
+function TableMenu1Lines(props) {
+    return(
+        <div>
+        <TableLine className="w-full flex-auto" lineName="SousMenu1" />
+        <TableLine className="w-full flex-auto" lineName="SousMenu2" />
+        </div>
+    );
 }
