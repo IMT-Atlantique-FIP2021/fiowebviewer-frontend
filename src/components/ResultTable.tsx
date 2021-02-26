@@ -49,7 +49,7 @@ function TableLine(props: { result: ResultType }) {
             {TableColumnCheckbox(props.result.id)}
             {TableColumnJobname(props.result.name, props.result.id)}
             {TableColumnTags(props.result.tags)}
-            {TableColumnSubmittedat(props.result.id)}
+            {TableColumnSubmittedat(props.result.submitted_at)}
             {TableColumnActions()}
         </tr>
     );
