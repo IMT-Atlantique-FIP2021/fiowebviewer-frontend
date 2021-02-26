@@ -11,7 +11,7 @@ export default function Header() {
                         className="flex items-center text-white group"
                         href="/"
                     >
-                        <img src={FIOLogo} className="h-7" alt="" />
+                        <img src={FIOLogo} className="transition duration-1000 ease-in-out transform hover:-rotate-180 h-7" alt="" />
                         <div className="font-bold text-2xl ml-1 mr-3">FLEX</div>
                         <div className="font-light text-xl opacity-80 group-hover:opacity-100">
                             Flexible I/O Explorer
