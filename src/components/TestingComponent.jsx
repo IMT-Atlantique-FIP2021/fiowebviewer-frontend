@@ -5,19 +5,19 @@ export default function TestingComponent() {
     return (
         <div className="mt-5">
             <div className="container mx-auto px-5">
-                <div className="flex flew-row space-x-5">
-                    <div className="flex-auto space-y-5">
+                <div className="grid grid-cols-2 space-x-5">
+                    <div className="space-y-5">
 
                         <Table tableHeader={<TableTestName />}>
                             <Table tableName="Sous Menu1" subMenu={true} tableHeader={<TableTestNameUserArgs />}>{TableTestNameUserArgsValue()}</Table>
-                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestName />}>LINE2</Table>
-                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestName />}>LINE3</Table>
+                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestNameOutput />}>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestCsv />}>{TableTestCsvValue()}</Table>
                         </Table>
 
                         <Table tableHeader={<TableTestName />}></Table>
 
                     </div>
-                    <div className="flex-auto">
+                    <div>
 
                         <Table tableHeader={<TableJobsName />}>
                             <div>
@@ -49,14 +49,14 @@ class Table extends Component {
         if (!subMenu) {
             return (
 
-                <div className="rounded shadow-lg bg-white">
+                <div className="flex-none rounded shadow-lg bg-white">
                     <div className="bg-blue-ovh-light h-1 rounded-t" />
                     <div className="font-bold py-3 border-b">
                         <TableHeader tableHeader={this.props.tableHeader} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
                     </div>
                     {
                         !this.state.isReduced &&
-                        <div className=" w-full">
+                        <div>
                             {this.props.children}
                         </div>
                     }
@@ -121,7 +121,7 @@ class TableHeader extends Component {
 
 function TableTestName(props) {
     return (
-        <div>{props.title || "Default Header"}</div>
+        <div>{props.title || "FIO-OUTPUT-3"}</div>
     );
 }
 
@@ -130,7 +130,6 @@ function TableTestNameUserArgs(props) {
         <div>{props.title || "User Args"}</div>
     );
 }
-
 function TableTestNameUserArgsValue() {
     return (
         <div className="px-5 text-xs">
@@ -138,6 +137,39 @@ function TableTestNameUserArgsValue() {
         </div>
     );
 }
+function TableTestNameOutput(props) {
+    return (
+        <div>{props.title || "Output"}</div>
+    );
+}
+function TableTestNameOutputValue() {
+    return (
+        <div flex-none className="px-5 text-xs ">
+            randread: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=psync, iodepth=16
+            ...
+            fio-3.8
+            Starting 4 processes
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+
+        </div>
+    );
+}
+function TableTestCsv(props) {
+    return (
+        <div>{props.title || "CSV"}</div>
+    );
+}
+function TableTestCsvValue() {
+    return (
+        <div flex-none className="px-5 text-s  text-blue-ovh-light underline hover:text-blue-ovh-dark ">
+            <a href="https://guigui.io/" >Download all as tar.gz</a>
+        </div>
+    );
+}
+
 
 function TableJobsName(props) {
     return (
