@@ -1,7 +1,6 @@
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import Result from "../components/Result";
-import TestingComponent from "../components/TestingComponent";
+import Content from "../components/Content";
 import Footer from "../components/Footer";
 
 function Dashboard() {
@@ -12,7 +11,7 @@ function Dashboard() {
 
                 <NavBar />
 
-                <Result />
+                <Content />
             </div>
 
             <Footer />
