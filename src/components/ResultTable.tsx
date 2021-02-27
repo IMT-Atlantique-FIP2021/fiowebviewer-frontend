@@ -20,7 +20,6 @@ export default class Table extends Component {
 
     constructor(props: any) {
         super(props);
-        this.getInitialState = this.getInitialState.bind(this);
         this.state = this.getInitialState();
     }
 
@@ -37,41 +36,62 @@ export default class Table extends Component {
         };
     }
 
-    handleOnChange(index: number) {
-        console.log("Changed occurred on checkbox " + index);
+    isAllSelected() {
+        return (
+            this.state.selectedResults.filter(state => state).length === this.state.selectedResults.length
+        )
+    }
+
+    handleOnCheckbox_SelectAll() {
+        this.setState(_.fill(this.state.selectedResults, !this.isAllSelected()))
+    }
+
+    handleOnCheckbox_Select(index: number) {
+        let newState = { ...this.state };
+        newState.selectedResults[index] = !newState.selectedResults[index];
+        this.setState(newState);
     }
 
     // TODO: Add empty list visual
     render() {
-        const test = _.merge(this.state.selectedResults, this.state.results)
+        const checkboxAllState = {
+            checked: this.isAllSelected(),
+            onChange: this.handleOnCheckbox_SelectAll.bind(this)
+        }
 
         const checkboxStates = this.state.selectedResults.map(
             (isChecked, index) => ({
                 checked: isChecked,
-                onChange: this.handleOnChange.bind(this, index),
+                onChange: this.handleOnCheckbox_Select.bind(this, index),
             })
         );
 
-        const tableLines = this.state.results.map((result) => (
-            <TableLine key={result.id} result={result} checkbox={} />
+        const tableHeader = TableHeader(checkboxAllState)
+
+        const tableLines = this.state.results.map((result, index) => (
+            <TableLine
+                key={result.id}
+                result={result}
+                checkbox={checkboxStates[index]}
+            />
         ));
 
         return (
             <table className="table-fixed w-full">
-                <TableHeader />
+                {tableHeader}
                 <tbody>{tableLines}</tbody>
             </table>
         );
     }
 }
 
-function TableHeader() {
+function TableHeader(checkbox: CheckboxProps) {
     return (
         <thead>
             <tr className="text-left border-b">
                 <th className="w-14">
                     <div className="flex content-center justify-center">
-                        <input type="checkbox" className="rounded" />
+                        <input {...checkbox} type="checkbox" className="rounded" />
                     </div>
                 </th>
                 <th className="py-4 px-4 w-64">Job Name</th>
