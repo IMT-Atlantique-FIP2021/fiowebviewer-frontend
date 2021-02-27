@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import ResultTable from "./ResultTable";
-import ResultExplorer from "./ResultExplorer"
+import ResultExplorer from "./ResultExplorer";
+import ResultCompare from "./ResultCompare";
 
 export default function Content() {
     let query = useQuery();
@@ -10,14 +11,27 @@ export default function Content() {
         <div id="CONTENT" className="my-8 flex flex-col space-y-5">
             <Switch>
                 <Route path="/result">
-                    <ContentElement title={query.get("id") || "Unkown result"}>
-                        <ResultExplorer/>
+                    <ContentElement
+                        title={"Explore " + query.get("id") || "Unkown result"}
+                    >
+                        <ResultExplorer />
+                    </ContentElement>
+                </Route>
+
+                <Route path="/compare">
+                    <ContentElement
+                        title={
+                            "Compare " + query.getAll("id").join(" & ") ||
+                            "Unkown result"
+                        }
+                    >
+                        <ResultCompare />
                     </ContentElement>
                 </Route>
 
                 <Route path="/">
-                    <ContentElement title="Result Explorer">
-                        <ResultTable/>
+                    <ContentElement title="Result Table">
+                        <ResultTable />
                     </ContentElement>
                 </Route>
             </Switch>
@@ -32,7 +46,7 @@ type ContentElementProps = {
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
-  }
+}
 
 function ContentElement(props: ContentElementProps) {
     return (
@@ -42,7 +56,7 @@ function ContentElement(props: ContentElementProps) {
                 <div className="px-5 py-3 border-b">
                     <div className="text-xl">{props.title}</div>
                 </div>
-                <div className="pb-10">{props.children}</div>
+                <div>{props.children}</div>
             </div>
         </div>
     );

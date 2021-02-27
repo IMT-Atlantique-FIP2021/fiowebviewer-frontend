@@ -5,17 +5,20 @@ import ResultListExamples from "../assets/resultList.json";
 
 var _ = require("lodash");
 
-type ResultType = {
+interface ResultType {
     id: string;
     name: string;
     tags: string[];
     submitted_at: string;
-};
+}
+
+interface ResultState extends ResultType {
+    selected: boolean;
+}
 
 export default class Table extends Component {
     state: {
-        results: ResultType[];
-        selectedResults: boolean[];
+        results: ResultState[];
     };
 
     constructor(props: any) {
@@ -25,62 +28,72 @@ export default class Table extends Component {
 
     getInitialState() {
         const resultList: ResultType[] = ResultListExamples || [];
-        const unselectedResultList: boolean[] = _.fill(
-            Array(resultList.length),
-            false
-        );
-
-        return {
-            results: resultList,
-            selectedResults: unselectedResultList,
-        };
+        const resultStateList: ResultState[] = resultList.map((r) => ({
+            ...r,
+            selected: false,
+        }));
+        return { results: resultStateList };
     }
 
     isAllSelected() {
         return (
-            this.state.selectedResults.filter(state => state).length === this.state.selectedResults.length
-        )
+            this.state.results.filter((r) => r.selected).length ===
+            this.state.results.length
+        );
     }
 
     handleOnCheckbox_SelectAll() {
-        this.setState(_.fill(this.state.selectedResults, !this.isAllSelected()))
+        const newSelectedState = !this.isAllSelected();
+
+        this.setState(
+            this.state.results.map((r) => (r.selected = newSelectedState))
+        );
     }
 
-    handleOnCheckbox_Select(index: number) {
-        let newState = { ...this.state };
-        newState.selectedResults[index] = !newState.selectedResults[index];
+    handleOnCheckbox_Select(id: string) {
+        const newState = this.state.results
+            .filter((r) => r.id === id)
+            .map((r) => (r.selected = !r.selected));
         this.setState(newState);
     }
 
     // TODO: Add empty list visual
     render() {
-        const checkboxAllState = {
+        const tableHeader = TableHeader({
             checked: this.isAllSelected(),
-            onChange: this.handleOnCheckbox_SelectAll.bind(this)
-        }
+            onChange: this.handleOnCheckbox_SelectAll.bind(this),
+        });
 
-        const checkboxStates = this.state.selectedResults.map(
-            (isChecked, index) => ({
-                checked: isChecked,
-                onChange: this.handleOnCheckbox_Select.bind(this, index),
-            })
-        );
-
-        const tableHeader = TableHeader(checkboxAllState)
-
-        const tableLines = this.state.results.map((result, index) => (
+        const tableLines = this.state.results.map((result) => (
             <TableLine
                 key={result.id}
                 result={result}
-                checkbox={checkboxStates[index]}
+                checkbox={{
+                    checked: result.selected,
+                    onChange: this.handleOnCheckbox_Select.bind(
+                        this,
+                        result.id
+                    ),
+                }}
             />
         ));
 
+        const selectedResult = this.state.results
+            .filter((r) => r.selected)
+            .map((r) => r.id);
+
         return (
-            <table className="table-fixed w-full">
-                {tableHeader}
-                <tbody>{tableLines}</tbody>
-            </table>
+            <div>
+                <table className="table-fixed w-full">
+                    {tableHeader}
+                    <tbody>{tableLines}</tbody>
+                </table>
+                <div className="flex justify-center p-4">
+                    {TableCompareButton(selectedResult, () =>
+                        console.log("Clicked!")
+                    )}
+                </div>
+            </div>
         );
     }
 }
@@ -91,7 +104,11 @@ function TableHeader(checkbox: CheckboxProps) {
             <tr className="text-left border-b">
                 <th className="w-14">
                     <div className="flex content-center justify-center">
-                        <input {...checkbox} type="checkbox" className="rounded" />
+                        <input
+                            {...checkbox}
+                            type="checkbox"
+                            className="rounded"
+                        />
                     </div>
                 </th>
                 <th className="py-4 px-4 w-64">Job Name</th>
@@ -122,7 +139,7 @@ function TableLine(props: TableLineProps) {
 
 type CheckboxProps = {
     checked: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: () => void;
 };
 
 function TableColumnCheckbox(resultId: string, checkbox: CheckboxProps) {
@@ -195,5 +212,29 @@ function TableColumnActions() {
                 </button>
             </div>
         </td>
+    );
+}
+
+function TableCompareButton(selectedResults: string[], onClick: () => void) {
+    const queryParams = "?".concat(
+        selectedResults.map((r) => "id=" + r).join("&")
+    );
+
+    return (
+        <Link
+            to={{
+                pathname: "/compare",
+                search: queryParams,
+            }}
+        >
+            <button
+                {...{ disabled: selectedResults.length <= 1 }}
+                onClick={onClick}
+                className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+            >
+                Compare {selectedResults.length} result
+                {selectedResults.length > 1 ? "s" : ""}
+            </button>
+        </Link>
     );
 }

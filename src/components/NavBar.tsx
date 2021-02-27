@@ -1,12 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { Search, FileText, Book, IconProps } from "react-feather";
-import {
-    Link,
-    LinkProps,
-    NavLink,
-    NavLinkProps,
-    Redirect,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
     return (
@@ -14,7 +8,7 @@ export default function NavBar() {
             <div className="container mx-auto">
                 <div className="flex flex-row">
                     <Link to="/">
-                        <NavBarItem icon={Search} text="Result Explorer" />
+                        <NavBarItem icon={Search} text="Result Table" />
                     </Link>
 
                     <Link to="/download">
