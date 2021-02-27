@@ -2,9 +2,9 @@ import { Component, PureComponent } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-export default function TestingComponent() {
+export default function ResultSummary() {
     return (
-        <div className="mt-5">
+        <div className="px-5 py-3">
             <div className="container mx-auto px-5">
                 <div className="grid grid-cols-2 space-x-5">
                     <div className="space-y-5">

@@ -11,11 +11,7 @@ export default function Content() {
         <div id="CONTENT" className="my-8 flex flex-col space-y-5">
             <Switch>
                 <Route path="/result">
-                    <ContentElement
-                        title={"Explore " + query.get("id") || "Unkown result"}
-                    >
-                        <ResultExplorer />
-                    </ContentElement>
+                    <ResultExplorer />
                 </Route>
 
                 <Route path="/compare">
