@@ -1,158 +1,175 @@
-import ResultListTest from "../assets/resultList.json";
-import ResultExplorer from './ResultExplorer'
 import { Component } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
-import { isConstructorTypeNode } from "typescript";
 
-export default function Result() {
+export default function TestingComponent() {
     return (
         <div className="mt-5">
             <div className="container mx-auto px-5">
-                <div className="flex flex-row space-x-5">
-                    <TableTestname />
-                    <TableTestname />
+                <div className="grid grid-cols-2 space-x-5">
+                    <div className="space-y-5">
+                        <Table tableHeader={<TableTestName />}>
+                            <Table tableName="Sous Menu1" subMenu={true} tableHeader={<TableTestNameUserArgs />}>{TableTestNameUserArgsValue()}</Table>
+                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestNameOutput />}>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestCsv />}>{TableTestCsvValue()}</Table>
+                        </Table>
+
+                        <Table tableHeader={<TableTestName />}></Table>
+                    </div>
+                    <div>
+                        <Table tableHeader={<TableJobsName />}>
+                            <div>
+                                BIG GRAPH
+                            </div>
+                        </Table>
+                    </div>
                 </div>
+
             </div>
-        </div>
+        </div >
     );
 }
 
-// function TableTestname() {
-//     if(ChevronToggle.isOpen)
-//         return (
-//         <table className="shadow-md bg-white flex-auto ">
-//             <TableTestnameHeader />
-//             <TableTestnameUserArgs />
-//         </table> 
-//         )
-
-//     else
-//         return (
-//         <table className="shadow-md bg-white flex-auto ">
-//             <TableTestnameHeader />
-//         </table>
-//     )
-// }
-
-class TableTestname extends Component {
+class Table extends Component {
     constructor(props) {
         super(props);
-        this.dropdownTableHandler = this.dropdownTableHandler.bind(this);
-        this.state = { isOpen: false };
+        this.onVisibilityChange = this.onVisibilityChange.bind(this)
+        this.state = { isReduced: true }
     }
 
-    dropdownTableHandler() {
-        const previousIsOpen = this.state.isOpen;
-        console.log("CLICK IN TABLE");
-        this.setState({ isOpen: !previousIsOpen });
+    onVisibilityChange() {
+        this.setState({ isReduced: !this.state.isReduced });
     }
 
     render() {
-        const dropdownState = { 
-            isOpen: this.state.isOpen, 
-            onClickHandler: this.dropdownTableHandler
-        }
+        const subMenu = this.props.subMenu
 
-        return (
-            <table className="shadow-md bg-white flex-auto">
-                <TableTestnameHeader dropdownState={dropdownState} />
-                { this.state.isOpen && <TableTestnameUserArgs /> }
-            </table> 
-        )
+        if (!subMenu) {
+            return (
+
+                <div className="flex-none rounded shadow-lg bg-white">
+                    <div className="bg-blue-ovh-light h-1 rounded-t" />
+                    <div className="font-bold py-3 border-b">
+                        <TableHeader tableHeader={this.props.tableHeader} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
+                    </div>
+                    {
+                        !this.state.isReduced &&
+                        <div>
+                            {this.props.children}
+                        </div>
+                    }
+                </div>
+            )
+        }
+        else
+            return (
+
+                <div className="py-1 border-b">
+                    <div>
+                        <TableHeader tableHeader={this.props.tableHeader} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
+                    </div>
+                    {
+                        !this.state.isReduced &&
+                        <div className="">
+                            {this.props.children}
+                        </div>
+                    }
+                </div>
+            )
     }
 }
 
-function TableTestnameHeader(props) {
-    return (
-        <tr className="bg-green-600 text-white text-left border">
-            <th className="text-center">
-                <ChevronToggle dropdownState={props.dropdownState} />
-            </th>
-            <th className="py-4 px-4 w-64">Job Name</th>
-            <th className="py-4 px-4">Tags</th>
-        </tr>
-    )
-}
-
-function TableTestnameUserArgs() {
-    return (
-        <tr className="bg-white-600 text-black text-left border">
-            <th className="text-center"><ChevronToggle />
-            </th>
-            <th className="py-4 px-4 w-64">Job Name</th>
-            <th className="py-4 px-4">Tags</th>
-        </tr>
-    )
-}
-
-
-
-function TableJobs() {
-    return (
-        <table className="shadow-md bg-white flex-auto ">
-            <TableJobsHeader />
-        </table>
-    )
-}
-
-function TableJobsHeader() {
-    return (
-        <tr className="bg-green-600 text-white text-left border">
-            <th className="w-10 text-center">
-                <input type="checkbox" className="h-4 w-4" />
-            </th>
-            <th className="py-4 px-4 w-64">JOBS</th>
-        </tr>
-    );
-}
-
-
-// function ChevronToggle(props) {
-//     const btnClass = "p-2 text-white opacity-80 hover:opacity-100 focus:outline-none";
-//     if (props.dropdownState.isOpen) {
-//         return (
-//             <button onClick={props.dropdownState.onClickHandler} className={btnClass}>
-//                 <ChevronDown/>
-//             </button>
-//         );
-//     } else {
-//         return (
-//             <button onClick={props.onClick} className={btnClass}>
-//                 <ChevronRight/>
-//             </button>
-//         );
-//     }
-// }
-
-// <ChevronToggle dropdownState={...} />
-// dropdownState = { isOpen, dropdownTableHandler }
-class ChevronToggle extends Component {
+class TableHeader extends Component {
     constructor(props) {
         super(props);
         this.onClickHandler = this.onClickHandler.bind(this)
     }
 
     onClickHandler() {
-        console.log("CLICK ON BUTTO");
-        this.props.dropdownState.dropdownTableHandler();
+        this.props.callbackHandler();
     }
 
     render() {
-        const btnClass = "p-2 text-white opacity-80 hover:opacity-100 focus:outline-none";
-        const isToggled = this.props.dropdownState.isOpen
+        const btnClass = "align-bottom";
+        const isReduced = this.props.isReduced;
 
-        if (isToggled) {
+        if (isReduced) {
             return (
-                <button onClick={this.onClickHandler} className={btnClass}>
-                    <ChevronDown/>
-                </button>
+                <div className="flex px-5">
+                    <button onClick={this.onClickHandler} className={btnClass}>
+                        <ChevronRight />
+                    </button>
+                    {this.props.tableHeader}
+                </div>
             );
         } else {
             return (
-                <button onClick={this.onClickHandler} className={btnClass}>
-                    <ChevronRight/>
-                </button>
+                <div className="flex px-5">
+                    <button onClick={this.onClickHandler} className={btnClass}>
+                        <ChevronDown />
+                    </button>
+                    {this.props.tableHeader}
+                </div>
             );
         }
+
     }
+}
+
+
+function TableTestName(props) {
+    return (
+        <div>{props.title || "FIO Test Name"}</div>
+    );
+}
+
+function TableTestNameUserArgs(props) {
+    return (
+        <div>{props.title || "User Args"}</div>
+    );
+}
+function TableTestNameUserArgsValue() {
+    return (
+        <div className="px-5 text-xs">
+            ./fio-webviewer.sh --webviewer-tag FIO-READ-WRITE --webviewer-name FIO-TESTRW --name=randwrite --iodepth=1 --rw=randwrite --bs=4k --direct=0 --size=512M --numjobs=2 --runtime=240 --output=~/fioviewer/test.txt
+        </div>
+    );
+}
+function TableTestNameOutput(props) {
+    return (
+        <div>{props.title || "Output"}</div>
+    );
+}
+function TableTestNameOutputValue() {
+    return (
+        <div flex-none className="px-5 text-xs ">
+            randread: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=psync, iodepth=16
+            ...
+            fio-3.8
+            Starting 4 processes
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+            randread: Laying out IO file (1 file / 512MiB)
+
+        </div>
+    );
+}
+function TableTestCsv(props) {
+    return (
+        <div>{props.title || "CSV"}</div>
+    );
+}
+function TableTestCsvValue() {
+    return (
+        <div flex-none className="px-5 text-s  text-blue-ovh-light underline hover:text-blue-ovh-dark ">
+            <a href="https://guigui.io/" >Download all as tar.gz</a>
+        </div>
+    );
+}
+
+
+function TableJobsName(props) {
+    return (
+        <div>{props.title || "Jobs"}</div>
+    );
 }

@@ -13,7 +13,6 @@ function Dashboard() {
                 <NavBar />
 
                 <Result />
-                <TestingComponent />
             </div>
 
             <Footer />

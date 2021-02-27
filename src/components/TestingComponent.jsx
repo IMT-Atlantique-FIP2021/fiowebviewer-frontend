@@ -7,7 +7,6 @@ export default function TestingComponent() {
             <div className="container mx-auto px-5">
                 <div className="grid grid-cols-2 space-x-5">
                     <div className="space-y-5">
-
                         <Table tableHeader={<TableTestName />}>
                             <Table tableName="Sous Menu1" subMenu={true} tableHeader={<TableTestNameUserArgs />}>{TableTestNameUserArgsValue()}</Table>
                             <Table tableName="Sous Menu2" subMenu={true} tableHeader={<TableTestNameOutput />}>{TableTestNameOutputValue()}</Table>
@@ -15,10 +14,8 @@ export default function TestingComponent() {
                         </Table>
 
                         <Table tableHeader={<TableTestName />}></Table>
-
                     </div>
                     <div>
-
                         <Table tableHeader={<TableJobsName />}>
                             <div>
                                 BIG GRAPH
@@ -121,7 +118,7 @@ class TableHeader extends Component {
 
 function TableTestName(props) {
     return (
-        <div>{props.title || "FIO-OUTPUT-3"}</div>
+        <div>{props.title || "FIO Test Name"}</div>
     );
 }
 
