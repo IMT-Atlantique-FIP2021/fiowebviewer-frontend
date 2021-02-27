@@ -181,13 +181,14 @@ function TableJobsName(props) {
 }
 function TableJobsValue() {
     return (
-
-        <div className="h-80 p-5" >
-            <div className="text-center">
-                Hello
-            </div>
-            <Graph />
+        <div>
+            <Graph title="bw" data={data} xLabel="MB/s" />
+            <Graph title="iops" data={data} xLabel="iops" />
+            <Graph title="lat" data={data} xLabel="ms" />
+            <Graph title="slat" data={data} xLabel="ms" />
+            <Graph title="clat" data={data} xLabel="ms" />
         </div>
+
     );
 }
 
@@ -195,43 +196,43 @@ function TableJobsValue() {
 
 const data = [
     {
-        name: 'Page A',
+        name: '0',
         uv: 4000,
         pv: 2400,
         amt: 2400,
     },
     {
-        name: 'Page B',
+        name: '1',
         uv: 3000,
         pv: 1398,
         amt: 2210,
     },
     {
-        name: 'Page C',
+        name: '2',
         uv: 2000,
         pv: 9800,
         amt: 2290,
     },
     {
-        name: 'Page D',
+        name: '3',
         uv: 2780,
         pv: 3908,
         amt: 2000,
     },
     {
-        name: 'Page E',
+        name: '4',
         uv: 1890,
         pv: 4800,
         amt: 2181,
     },
     {
-        name: 'Page F',
+        name: '5',
         uv: 2390,
         pv: 3800,
         amt: 2500,
     },
     {
-        name: 'Page G',
+        name: '6',
         uv: 3490,
         pv: 4300,
         amt: 2100,
@@ -241,31 +242,37 @@ const data = [
 
 
 class Graph extends PureComponent {
+
     static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
 
     render() {
         return (
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                    width={500}
-                    height={300}
-                    data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="linear" dataKey="pv" stroke="#228844" activeDot={{ r: 8 }} />
-                    <Line type="linear" dataKey="uv" stroke="#dd2244" />
-                </LineChart>
-            </ResponsiveContainer>
+            <div className="h-60 p-5" >
+                <div className="text-center">
+                    {this.props.title}
+                </div>
+                <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                        width={500}
+                        height={300}
+                        data={this.props.data}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" label={this.props.xLabel} />
+                        <YAxis label="t|s]" />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="linear" dataKey="pv" stroke="#228844" activeDot={{ r: 8 }} />
+                        <Line type="linear" dataKey="uv" stroke="#dd2244" />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
         );
     }
 }
