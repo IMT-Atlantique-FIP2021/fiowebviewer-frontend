@@ -18,12 +18,12 @@ export default function TestingComponent() {
                     </div>
                     <div>
                         <Table tableHeader={<TableJobsName />}>
-                        <div className="grid grid-cols-4 auto-layout">
-                            <div className="col-span-1 border-r-2 ">
-                                NEED CHECKBOX
+                            <div className="grid grid-cols-4 auto-layout">
+                                <div className="col-span-1 border-r-2 ">
+                                    NEED CHECKBOX
                             </div>
-                            <div className="col-span-3">
-                                {TableJobsValue()}
+                                <div className="col-span-3">
+                                    {TableJobsValue()}
                                 </div>
                             </div>
                         </Table>
@@ -184,9 +184,9 @@ function TableJobsValue() {
 
         <div className="h-80 p-5" >
             <div className="text-center">
-            Hello
+                Hello
             </div>
-        <Graph />
+            <Graph />
         </div>
     );
 }
@@ -261,7 +261,7 @@ class Graph extends PureComponent {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Legend  />
+                    <Legend />
                     <Line type="linear" dataKey="pv" stroke="#228844" activeDot={{ r: 8 }} />
                     <Line type="linear" dataKey="uv" stroke="#dd2244" />
                 </LineChart>
