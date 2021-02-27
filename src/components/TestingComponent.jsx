@@ -41,7 +41,7 @@ class Table extends Component {
                     <div className="space-x-5">
                         <div className="rounded shadow-lg bg-white">
                             <div className="bg-blue-ovh-light h-1 rounded-t" />
-                            <div className="text-xl py-3 border-b ">
+                            <div className="font-bold py-3 border-b">
                                 <TableHeader tableHeader={this.props.tableHeader} isReduced={this.state.isReduced} callbackHandler={this.onVisibilityChange} />
                             </div>
                             {
