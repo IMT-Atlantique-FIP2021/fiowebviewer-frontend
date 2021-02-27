@@ -88,8 +88,11 @@ export default class Table extends Component {
                     {tableHeader}
                     <tbody>{tableLines}</tbody>
                 </table>
-                <div className="flex justify-center p-4">
+                <div className="flex justify-center p-4 space-x-44">
                     {TableCompareButton(selectedResult, () =>
+                        console.log("Clicked!")
+                    )}
+                    {TableDeleteButton(selectedResult, () =>
                         console.log("Clicked!")
                     )}
                 </div>
@@ -233,6 +236,30 @@ function TableCompareButton(selectedResults: string[], onClick: () => void) {
                 className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
             >
                 Compare {selectedResults.length} result
+                {selectedResults.length > 1 ? "s" : ""}
+            </button>
+        </Link>
+    );
+}
+
+function TableDeleteButton(selectedResults: string[], onClick: () => void) {
+    const queryParams = "?".concat(
+        selectedResults.map((r) => "id=" + r).join("&")
+    );
+
+    return (
+        <Link
+            to={{
+                pathname: "/delete",
+                search: queryParams,
+            }}
+        >
+            <button
+                {...{ disabled: selectedResults.length <= 1 }}
+                onClick={onClick}
+                className="disabled:opacity-50 disabled:bg-gray-400 bg-red-500 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+            >
+                Delete {selectedResults.length} result
                 {selectedResults.length > 1 ? "s" : ""}
             </button>
         </Link>
