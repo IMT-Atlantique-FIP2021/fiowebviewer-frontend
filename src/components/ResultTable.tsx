@@ -1,5 +1,9 @@
+import { Component } from "react";
 import { Tag, XCircle, PlusCircle } from "react-feather";
 import { Link } from "react-router-dom";
+import ResultListExamples from "../assets/resultList.json";
+
+var _ = require("lodash");
 
 type ResultType = {
     id: string;
@@ -8,21 +12,57 @@ type ResultType = {
     submitted_at: string;
 };
 
-type TableProps = {
-    results: ResultType[];
-};
+export default class Table extends Component {
+    state: {
+        results: ResultType[];
+        selectedResults: boolean[];
+    };
 
-export default function Table(props: TableProps) {
-    return (
-        <table className="table-fixed w-full">
-            <TableHeader />
-            <tbody>
-                {props.results.map((result) => (
-                    <TableLine key={result.id} result={result} />
-                ))}
-            </tbody>
-        </table>
-    );
+    constructor(props: any) {
+        super(props);
+        this.getInitialState = this.getInitialState.bind(this);
+        this.state = this.getInitialState();
+    }
+
+    getInitialState() {
+        const resultList: ResultType[] = ResultListExamples || [];
+        const unselectedResultList: boolean[] = _.fill(
+            Array(resultList.length),
+            false
+        );
+
+        return {
+            results: resultList,
+            selectedResults: unselectedResultList,
+        };
+    }
+
+    handleOnChange(index: number) {
+        console.log("Changed occurred on checkbox " + index);
+    }
+
+    // TODO: Add empty list visual
+    render() {
+        const test = _.merge(this.state.selectedResults, this.state.results)
+
+        const checkboxStates = this.state.selectedResults.map(
+            (isChecked, index) => ({
+                checked: isChecked,
+                onChange: this.handleOnChange.bind(this, index),
+            })
+        );
+
+        const tableLines = this.state.results.map((result) => (
+            <TableLine key={result.id} result={result} checkbox={} />
+        ));
+
+        return (
+            <table className="table-fixed w-full">
+                <TableHeader />
+                <tbody>{tableLines}</tbody>
+            </table>
+        );
+    }
 }
 
 function TableHeader() {
@@ -43,10 +83,15 @@ function TableHeader() {
     );
 }
 
-function TableLine(props: { result: ResultType }) {
+type TableLineProps = {
+    result: ResultType;
+    checkbox: CheckboxProps;
+};
+
+function TableLine(props: TableLineProps) {
     return (
         <tr className="border-b odd:bg-gray-100">
-            {TableColumnCheckbox(props.result.id)}
+            {TableColumnCheckbox(props.result.id, props.checkbox)}
             {TableColumnJobname(props.result.name, props.result.id)}
             {TableColumnTags(props.result.tags)}
             {TableColumnSubmittedat(props.result.submitted_at)}
@@ -55,12 +100,22 @@ function TableLine(props: { result: ResultType }) {
     );
 }
 
-function TableColumnCheckbox(resultId: string) {
+type CheckboxProps = {
+    checked: boolean;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+function TableColumnCheckbox(resultId: string, checkbox: CheckboxProps) {
+    const formattedProps = {
+        ...checkbox,
+        id: "checkbox_" + resultId,
+    };
+
     return (
         <td>
             <div className="flex content-center justify-center">
                 <input
-                    id={"checkbox_" + resultId}
+                    {...formattedProps}
                     type="checkbox"
                     className="rounded"
                 />

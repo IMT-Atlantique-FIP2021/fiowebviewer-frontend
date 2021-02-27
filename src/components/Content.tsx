@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
-import ResultListTest from "../assets/resultList.json";
 import ResultTable from "./ResultTable";
 import ResultExplorer from "./ResultExplorer"
 
@@ -18,7 +17,7 @@ export default function Content() {
 
                 <Route path="/">
                     <ContentElement title="Result Explorer">
-                        <ResultTable results={ResultListTest}/>
+                        <ResultTable/>
                     </ContentElement>
                 </Route>
             </Switch>
