@@ -25,7 +25,8 @@ $ npm start
 
 ## Screenshots
 
-![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.png)
+<!-- ![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.png) -->
+![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.gif)
 
 ## Built With
 
