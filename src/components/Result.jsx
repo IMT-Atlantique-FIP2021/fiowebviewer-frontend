@@ -10,6 +10,7 @@ export default function Result() {
             <div className="container mx-auto px-5">
                 <div className="flex flex-row space-x-5">
                     <TableTestname />
+                    <TableTestname />
                 </div>
             </div>
         </div>
