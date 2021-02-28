@@ -154,7 +154,7 @@ function TableColumnCheckbox(resultId: string, checkbox: CheckboxProps) {
                 <input
                     {...formattedProps}
                     type="checkbox"
-                    className="rounded"
+                    className="rounded" 
                 />
             </div>
         </td>
