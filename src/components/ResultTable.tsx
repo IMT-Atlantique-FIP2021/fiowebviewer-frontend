@@ -39,8 +39,8 @@ export default class Table extends Component {
         this.setState({ ...this.state, isFetching: true });
         fetch("/results")
             .then((response) => response.json())
-            .catch((e) => {
-                console.log(e);
+            .catch(() => {
+                console.warn("FLEX Backend is unreacheable! Loaded sample data...")
                 this.setState({ ...this.state, isFetching: false });
                 return ResultListExamples;
             })
