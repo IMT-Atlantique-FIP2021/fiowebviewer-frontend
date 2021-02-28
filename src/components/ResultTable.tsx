@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Tag, XCircle, PlusCircle } from "react-feather";
+import { Tag, XCircle, PlusCircle, Loader } from "react-feather";
 import { Link } from "react-router-dom";
 import ResultListExamples from "../assets/resultList.json";
 
@@ -18,27 +18,56 @@ interface ResultState extends ResultType {
 
 export default class Table extends Component {
     state: {
+        isFetching: boolean;
         results: ResultState[];
     };
+    // timer: NodeJS.Timeout | null;
 
     constructor(props: any) {
         super(props);
-        this.state = this.getInitialState();
+        this.fetchResults = this.fetchResults.bind(this);
+        this.state = {
+            isFetching: false,
+            results: [],
+        };
+        // this.timer = null;
     }
 
-    getInitialState() {
-        const resultList: ResultType[] = ResultListExamples || [];
-        const resultStateList: ResultState[] = resultList.map((r) => ({
-            ...r,
-            selected: false,
-        }));
-        return { results: resultStateList };
+    fetchResults() {
+        if (this.state.isFetching) return;
+
+        this.setState({ ...this.state, isFetching: true });
+        fetch("/results")
+            .then((response) => response.json())
+            .catch((e) => {
+                console.log(e);
+                this.setState({ ...this.state, isFetching: false });
+                return ResultListExamples;
+            })
+            .then((resultList: ResultType[]) =>
+                resultList.map((r: ResultType) => ({ ...r, selected: false }))
+            )
+            .then((resultList: ResultState[]) => {
+                this.setState({ results: resultList, isFetching: false });
+            });
     }
+
+    componentDidMount() {
+        this.fetchResults();
+        // this.timer = setInterval(() => this.fetchResults(), 1000);
+    }
+
+    // componentWillUnmount() {
+    //     if (this.timer) {
+    //         clearInterval(this.timer);
+    //         this.timer = null;
+    //     }
+    // }
 
     isAllSelected() {
         return (
             this.state.results.filter((r) => r.selected).length ===
-            this.state.results.length
+                this.state.results.length && this.state.results.length !== 0
         );
     }
 
@@ -57,7 +86,6 @@ export default class Table extends Component {
         this.setState(newState);
     }
 
-    // TODO: Add empty list visual
     render() {
         const tableHeader = TableHeader({
             checked: this.isAllSelected(),
@@ -88,14 +116,7 @@ export default class Table extends Component {
                     {tableHeader}
                     <tbody>{tableLines}</tbody>
                 </table>
-                <div className="flex justify-center p-4 space-x-44">
-                    {TableCompareButton(selectedResult, () =>
-                        console.log("Clicked!")
-                    )}
-                    {TableDeleteButton(selectedResult, () =>
-                        console.log("Clicked!")
-                    )}
-                </div>
+                {tableFooter(selectedResult, _.isEmpty(tableLines))}
             </div>
         );
     }
@@ -127,6 +148,15 @@ type TableLineProps = {
     result: ResultType;
     checkbox: CheckboxProps;
 };
+
+function TableLoadingLine() {
+    return (
+        <div className="flex flex-row justify-center p-4 animate-pulse">
+            <Loader className="animate-spin mr-4" />
+            <div className="select-none">Fetching results...</div>
+        </div>
+    );
+}
 
 function TableLine(props: TableLineProps) {
     return (
@@ -193,7 +223,7 @@ function TableColumnTags(tags: string[]) {
     return (
         <td className="px-4">
             <div className="flex flex-row justify-start space-x-2 overflow-x-auto scrollbar-thin">
-                {tags.map((tag, index) => createTagBadge(tag))}
+                {tags.map((tag) => createTagBadge(tag))}
             </div>
         </td>
     );
@@ -218,50 +248,74 @@ function TableColumnActions() {
     );
 }
 
-function TableCompareButton(selectedResults: string[], onClick: () => void) {
+function tableFooter(selectedResult: string[], isEmpty: boolean) {
+    if (!isEmpty) {
+        return (
+            <div className="flex justify-center p-4 space-x-44">
+                {TableCompareButton(selectedResult)}
+                {TableDeleteButton(selectedResult, () =>
+                    console.log("Clicked!")
+                )}
+            </div>
+        );
+    } else {
+        return (
+            <div className="flex justify-center p-4">
+                <TableLoadingLine />
+            </div>
+        );
+    }
+}
+
+// TODO: Factorize TableButton
+function TableCompareButton(selectedResults: string[]) {
     const queryParams = "?".concat(
         selectedResults.map((r) => "id=" + r).join("&")
     );
 
     return (
-        <Link
-            to={{
-                pathname: "/compare",
-                search: queryParams,
-            }}
-        >
-            <button
-                {...{ disabled: selectedResults.length <= 1 }}
-                onClick={onClick}
-                className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+        <div className="flex justify-center p-4">
+            <Link
+                to={{
+                    pathname: "/compare",
+                    search: queryParams,
+                }}
             >
-                Compare {selectedResults.length} result
-                {selectedResults.length > 1 ? "s" : ""}
-            </button>
-        </Link>
+                <button
+                    {...{ disabled: selectedResults.length <= 1 }}
+                    className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+                >
+                    Compare {selectedResults.length} result
+                    {selectedResults.length > 1 ? "s" : ""}
+                </button>
+            </Link>
+        </div>
     );
 }
 
+// TODO: Factorize TableButton
 function TableDeleteButton(selectedResults: string[], onClick: () => void) {
     const queryParams = "?".concat(
         selectedResults.map((r) => "id=" + r).join("&")
     );
 
     return (
-        <Link
-            to={{
-                pathname: "/delete",
-                search: queryParams,
-            }}
-        >
-            <button
-                {...{ disabled: selectedResults.length <= 1 }}
-                onClick={onClick}
-                className="disabled:opacity-50 disabled:bg-gray-400 bg-red-500 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+        <div className="flex justify-center p-4">
+            <Link
+                to={{
+                    pathname: "/delete",
+                    search: queryParams,
+                }}
             >
-                Delete {selectedResults.length} result
-                {selectedResults.length > 1 ? "s" : ""}
-            </button>
-        </Link>
+                <button
+                    {...{ disabled: selectedResults.length <= 1 }}
+                    onClick={onClick}
+                    className="disabled:opacity-50 disabled:bg-gray-400 bg-red-500 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+                >
+                    Delete {selectedResults.length} result
+                    {selectedResults.length > 1 ? "s" : ""}
+                </button>
+            </Link>
+        </div>
     );
 }
