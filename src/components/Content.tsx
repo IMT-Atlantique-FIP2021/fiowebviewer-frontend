@@ -3,6 +3,7 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import ResultTable from "./ResultTable";
 import ResultExplorer from "./ResultExplorer";
 import ResultCompare from "./ResultCompare";
+import ResultDelete from "./ResultDelete";
 
 export default function Content() {
     let query = useQuery();
@@ -22,6 +23,17 @@ export default function Content() {
                         }
                     >
                         <ResultCompare />
+                    </ContentElement>
+                </Route>
+
+                <Route path="/delete">
+                    <ContentElement
+                        title={
+                            "Delete " + query.getAll("id").join(" & ") ||
+                            "Unkown result"
+                        }
+                    >
+                        <ResultDelete />
                     </ContentElement>
                 </Route>
 
