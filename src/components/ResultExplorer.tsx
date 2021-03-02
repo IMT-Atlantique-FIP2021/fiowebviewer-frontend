@@ -5,7 +5,6 @@ import testData from "../assets/testList.json"
 
 var randomColor = require('randomcolor');
 
-
 export default function ResultSummary() {
     return (
         <div className="px-5 py-3">
@@ -150,7 +149,7 @@ function RandomColor() {
 
 type testListType = {
     id: string
-    color: string, 
+    color: string,
     activated: boolean
 }
 
@@ -180,7 +179,7 @@ class TableJobs extends Component {
     handleOnChange(id: string) {
         let newActivatedValue: testListType[] = this.state.activatedValue;
         newActivatedValue.filter((obj) => (obj.id === id)).map((obj) => (obj.activated = !obj.activated))
-        this.setState({...this.state, activatedValue: newActivatedValue })
+        this.setState({ ...this.state, activatedValue: newActivatedValue })
     }
 
     render() {
@@ -189,10 +188,10 @@ class TableJobs extends Component {
                 <div className="col-span-1 border-r-2 p-2">
 
                     {this.state.activatedValue.map((test) => {
-                        const id_input="RE_TestResult_Cb_" + test.id;
+                        const id_input = "RE_TestResult_Cb_" + test.id;
                         return (
                             <div>
-                                <input id={test.id} checked={test.activated} type="checkbox" className="rounded ml-2 mr-2" onChange={this.handleOnChange.bind(this, test.id)}/>
+                                <input id={test.id} checked={test.activated} type="checkbox" className="rounded ml-2 mr-2" onChange={this.handleOnChange.bind(this, test.id)} />
                                 <label htmlFor={test.id}>{test.id}</label>
                             </div>
                         );
@@ -222,33 +221,33 @@ type GraphProps = {
 function Graph(props: GraphProps) {
     return (
         <div className="h-60 p-5" >
-                <div className="text-center">
-                    {props.title}
-                </div>
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                        width={500}
-                        height={300}
-                        data={props.data}
-                        margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" label={props.xLabel} />
-                        <YAxis label="t|s]" />
-                        <Tooltip />
-                        <Legend />
-                        {props.testList.map((testName: any) => {
-                            if (testName.activated) {
-                                return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
-                            }
-                        })}
-                    </LineChart>
-                </ResponsiveContainer>
+            <div className="text-center">
+                {props.title}
             </div>
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                    width={500}
+                    height={300}
+                    data={props.data}
+                    margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" label={props.xLabel} />
+                    <YAxis label="t|s]" />
+                    <Tooltip />
+                    <Legend />
+                    {props.testList.map((testName: any) => {
+                        if (testName.activated) {
+                            return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
+                        }
+                    })}
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     )
 }
