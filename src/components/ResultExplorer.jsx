@@ -18,14 +18,7 @@ export default function ResultSummary() {
                     </div>
                     <div>
                         <Table tableHeader={<TableJobsName />}>
-                            <div className="grid grid-cols-4 auto-layout">
-                                <div className="col-span-1 border-r-2 ">
-                                    {TableJobsSelection()}
-                                </div>
-                                <div className="col-span-3">
-                                    {TableJobsValue()}
-                                </div>
-                            </div>
+                            <TableJobs />
                         </Table>
                     </div>
                 </div>
@@ -180,30 +173,6 @@ function TableJobsName(props) {
     );
 }
 
-function TableJobsSelection() {
-    <table className="table-fixed w-full">
-        <tr>
-            <td>
-                <input id="checkbox_average" className="rounded"></input>
-            </td>
-        </tr>
-    </table>
-
-}
-
-function TableJobsValue() {
-    return (
-        <div>
-            <Graph testNames={testNames} title="bw" data={data} xLabel="MB/s" />
-            <Graph testNames={testNames} title="iops" data={data} xLabel="iops" />
-            <Graph testNames={testNames} title="lat" data={data} xLabel="ms" />
-            <Graph testNames={testNames} title="slat" data={data} xLabel="ms" />
-            <Graph testNames={testNames} title="clat" data={data} xLabel="ms" />
-        </div>
-
-    );
-}
-
 
 
 const data = [
@@ -259,18 +228,60 @@ const data = [
 ];
 
 
-function randomColor(){
-    const color = "#" + Math.floor(Math.random()*16777215).toString(16);
-    return(
-        color
-    );
-}
-
 const testNames = [
     { id: 'average', color: randomColor() },
     { id: 'uv', color: randomColor() },
     { id: 'pv', color: randomColor() },
 ];
+
+
+function randomColor() {
+    const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    return (
+        color
+    );
+}
+
+
+
+class TableJobs extends Component {
+    constructor(props) {
+        super(props);
+        this.data = data;
+        this.testNames = testNames;
+    }
+
+    render() {
+
+        return (
+            <div className="grid grid-cols-4 auto-layout">
+                <div className="col-span-1 border-r-2 ">
+
+                </div>
+                <div className="col-span-3">
+                    <Graph testNames={testNames} title="bw" data={data} xLabel="MB/s" />
+                    <Graph testNames={testNames} title="iops" data={data} xLabel="iops" />
+                    <Graph testNames={testNames} title="lat" data={data} xLabel="ms" />
+                    <Graph testNames={testNames} title="slat" data={data} xLabel="ms" />
+                    <Graph testNames={testNames} title="clat" data={data} xLabel="ms" />
+                </div>
+            </div>
+        )
+    }
+
+}
+
+
+
+function TableJobsGraphs() {
+    return (
+        <div>
+
+        </div>
+
+    );
+}
+
 
 class Graph extends PureComponent {
     constructor(props) {
