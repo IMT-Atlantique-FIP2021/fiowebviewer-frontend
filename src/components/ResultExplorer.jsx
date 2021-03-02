@@ -20,8 +20,8 @@ export default function ResultSummary() {
                         <Table tableHeader={<TableJobsName />}>
                             <div className="grid grid-cols-4 auto-layout">
                                 <div className="col-span-1 border-r-2 ">
-                                    NEED CHECKBOX
-                            </div>
+                                    {TableJobsSelection()}
+                                </div>
                                 <div className="col-span-3">
                                     {TableJobsValue()}
                                 </div>
@@ -179,14 +179,26 @@ function TableJobsName(props) {
         <div>{props.title || "Jobs"}</div>
     );
 }
+
+function TableJobsSelection() {
+    <table className="table-fixed w-full">
+        <tr>
+            <td>
+                <input id="checkbox_average" className="rounded"></input>
+            </td>
+        </tr>
+    </table>
+
+}
+
 function TableJobsValue() {
     return (
         <div>
-            <Graph title="bw" data={data} xLabel="MB/s" />
-            <Graph title="iops" data={data} xLabel="iops" />
-            <Graph title="lat" data={data} xLabel="ms" />
-            <Graph title="slat" data={data} xLabel="ms" />
-            <Graph title="clat" data={data} xLabel="ms" />
+            <Graph testNames={testNames} title="bw" data={data} xLabel="MB/s" />
+            <Graph testNames={testNames} title="iops" data={data} xLabel="iops" />
+            <Graph testNames={testNames} title="lat" data={data} xLabel="ms" />
+            <Graph testNames={testNames} title="slat" data={data} xLabel="ms" />
+            <Graph testNames={testNames} title="clat" data={data} xLabel="ms" />
         </div>
 
     );
@@ -200,51 +212,73 @@ const data = [
         uv: 4000,
         pv: 2400,
         amt: 2400,
+        average: 500,
     },
     {
         name: '1',
         uv: 3000,
         pv: 1398,
         amt: 2210,
+        average: 500,
     },
     {
         name: '2',
         uv: 2000,
         pv: 9800,
         amt: 2290,
+        average: 500,
     },
     {
         name: '3',
         uv: 2780,
         pv: 3908,
         amt: 2000,
+        average: 500,
     },
     {
         name: '4',
         uv: 1890,
         pv: 4800,
         amt: 2181,
+        average: 500,
     },
     {
         name: '5',
         uv: 2390,
         pv: 3800,
         amt: 2500,
+        average: 500,
     },
     {
         name: '6',
         uv: 3490,
         pv: 4300,
         amt: 2100,
+        average: 500,
     },
 ];
 
 
+function randomColor(){
+    const color = "#" + Math.floor(Math.random()*16777215).toString(16);
+    return(
+        color
+    );
+}
+
+const testNames = [
+    { id: 'average', color: randomColor() },
+    { id: 'uv', color: randomColor() },
+    { id: 'pv', color: randomColor() },
+];
 
 class Graph extends PureComponent {
-
+    constructor(props) {
+        super(props);
+        this.data = data;
+        this.testNames = testNames;
+    }
     static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
-
     render() {
         return (
             <div className="h-60 p-5" >
@@ -268,8 +302,9 @@ class Graph extends PureComponent {
                         <YAxis label="t|s]" />
                         <Tooltip />
                         <Legend />
-                        <Line type="linear" dataKey="pv" stroke="#228844" activeDot={{ r: 8 }} />
-                        <Line type="linear" dataKey="uv" stroke="#dd2244" />
+                        {this.testNames.map((testName) => {
+                            return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
+                        })}
                     </LineChart>
                 </ResponsiveContainer>
             </div>
