@@ -1,6 +1,8 @@
 import { Component, PureComponent } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+var randomColor = require('randomcolor');
+
 
 export default function ResultSummary() {
     return (
@@ -181,67 +183,65 @@ const data = [
         uv: 4000,
         pv: 2400,
         amt: 2400,
-        average: 500,
+        average: 800,
     },
     {
         name: '1',
         uv: 3000,
         pv: 1398,
         amt: 2210,
-        average: 500,
+        average: 300,
     },
     {
         name: '2',
         uv: 2000,
         pv: 9800,
         amt: 2290,
-        average: 500,
+        average: 945,
     },
     {
         name: '3',
         uv: 2780,
         pv: 3908,
         amt: 2000,
-        average: 500,
+        average: 1450,
     },
     {
         name: '4',
         uv: 1890,
         pv: 4800,
         amt: 2181,
-        average: 500,
+        average: 289,
     },
     {
         name: '5',
         uv: 2390,
         pv: 3800,
         amt: 2500,
-        average: 500,
+        average: 789,
     },
     {
         name: '6',
         uv: 3490,
         pv: 4300,
         amt: 2100,
-        average: 500,
+        average: 987,
     },
 ];
 
 
-const testNamesList = [
-    { id: 'average', color: randomColor(), activated:true, },
-    { id: 'uv', color: randomColor(), activated:false, },
-    { id: 'pv', color: randomColor(), activated:false, },
-];
-
-
-function randomColor() {
-    const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    return (
-        color
-    );
+function RandomColor(){
+    return randomColor({
+        luminosity: 'light',
+    })
 }
 
+
+const testNamesList = [
+    { id: 'average', color: RandomColor(), activated:true, },
+    { id: 'uv', color: RandomColor(), activated:true, },
+    { id: 'pv', color: RandomColor(), activated:true, },
+];
 
 
 class TableJobs extends Component {
