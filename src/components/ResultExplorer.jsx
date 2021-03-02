@@ -88,7 +88,7 @@ class TableHeader extends Component {
     }
 
     render() {
-        const btnClass = "align-bottom";
+        const btnClass = "outline-offset-none outline-none align-bottom";
         const isReduced = this.props.isReduced;
 
         if (isReduced) {
@@ -228,10 +228,10 @@ const data = [
 ];
 
 
-const testNames = [
-    { id: 'average', color: randomColor() },
-    { id: 'uv', color: randomColor() },
-    { id: 'pv', color: randomColor() },
+const testNamesList = [
+    { id: 'average', color: randomColor(), activated:true, },
+    { id: 'uv', color: randomColor(), activated:false, },
+    { id: 'pv', color: randomColor(), activated:false, },
 ];
 
 
@@ -248,46 +248,47 @@ class TableJobs extends Component {
     constructor(props) {
         super(props);
         this.data = data;
-        this.testNames = testNames;
+        this.testNamesList = testNamesList;
     }
 
     render() {
+
+        const ActivatedTests = testNamesList;
 
         return (
             <div className="grid grid-cols-4 auto-layout">
                 <div className="col-span-1 border-r-2 ">
 
+                {this.testNamesList.map((testName) => {
+                            return (
+                               <div>{testName.id}</div> 
+                            );
+                        })}                   
+
+
                 </div>
                 <div className="col-span-3">
-                    <Graph testNames={testNames} title="bw" data={data} xLabel="MB/s" />
-                    <Graph testNames={testNames} title="iops" data={data} xLabel="iops" />
-                    <Graph testNames={testNames} title="lat" data={data} xLabel="ms" />
-                    <Graph testNames={testNames} title="slat" data={data} xLabel="ms" />
-                    <Graph testNames={testNames} title="clat" data={data} xLabel="ms" />
+                    <Graph testNamesList={ActivatedTests} title="bw" data={data} xLabel="MB/s" />
+                    <Graph testNamesList={ActivatedTests} title="iops" data={data} xLabel="iops" />
+                    <Graph testNamesList={ActivatedTests} title="lat" data={data} xLabel="ms" />
+                    <Graph testNamesList={ActivatedTests} title="slat" data={data} xLabel="ms" />
+                    <Graph testNamesList={ActivatedTests} title="clat" data={data} xLabel="ms" />
                 </div>
             </div>
-        )
+        );
     }
 
 }
 
 
 
-function TableJobsGraphs() {
-    return (
-        <div>
-
-        </div>
-
-    );
-}
 
 
 class Graph extends PureComponent {
     constructor(props) {
         super(props);
         this.data = data;
-        this.testNames = testNames;
+        this.testNamesList = testNamesList;
     }
     static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
     render() {
@@ -313,8 +314,10 @@ class Graph extends PureComponent {
                         <YAxis label="t|s]" />
                         <Tooltip />
                         <Legend />
-                        {this.testNames.map((testName) => {
-                            return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
+                        {this.testNamesList.map((testName) => {
+                            if(testName.activated) {
+                                return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
+                            }
                         })}
                     </LineChart>
                 </ResponsiveContainer>
