@@ -180,7 +180,7 @@ class TableJobs extends Component {
     handleOnChange(id: string) {
         let newActivatedValue: testListType[] = this.state.activatedValue;
         newActivatedValue.filter((obj) => (obj.id === id)).map((obj) => (obj.activated = !obj.activated))
-        console.log(newActivatedValue)
+        this.setState({...this.state, activatedValue: newActivatedValue })
     }
 
     render() {
