@@ -232,10 +232,10 @@ const data = [
 
 function RandomColor(){
     return randomColor({
-        luminosity: 'light',
+        luminosity: 'bright',
+        hue: 'random',
     })
 }
-
 
 const testNamesList = [
     { id: 'average', color: RandomColor(), activated:true, },
