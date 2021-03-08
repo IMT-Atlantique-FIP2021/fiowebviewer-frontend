@@ -113,7 +113,7 @@ function TableHeader(tableName: string, isOpen: boolean, callbackHandler: any) {
     return (
         <div className="flex px-5">
             <button onClick={callbackHandler} className="align-bottom">
-                {isOpen ? <ChevronRight /> : <ChevronDown />}
+                {isOpen ? <ChevronDown /> : <ChevronRight />}
             </button>
             {tableName}
         </div>
