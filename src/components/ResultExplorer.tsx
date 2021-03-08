@@ -17,10 +17,30 @@ export default function ResultSummary() {
                             <Table tableName="CSV" subMenu>{TableTestCsvValue()}</Table>
                         </Table>
 
-                        <Table tableName="User Args"></Table>
+                        <Table tableName="READ">
+                            <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Clat Percentiles" subMenu>{TableTestNameOutputValue()}</Table>
+                        </Table>
+
+                        <Table tableName="WRITE">
+                            <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Clat Percentiles" subMenu>{TableTestNameOutputValue()}</Table>
+                        </Table>
+
+                        <Table tableName="IO Depth">
+                            TABLE CONTENT IO DEPTH
+                        </Table>
+
+                        <Table tableName="Latency">
+                            TABLE CONTENT Latency
+                        </Table>
+
+                        <Table tableName="CPU">
+                            TABLE CONTENT CPU
+                        </Table>
                     </div>
                     <div>
-                        <Table tableName="Jobs">
+                        <Table tableName="Jobs" open >
                             <TableJobs />
                         </Table>
                     </div>
@@ -34,10 +54,11 @@ export default function ResultSummary() {
 type TableProps = {
     subMenu?: boolean,
     tableName: string,
+    open?: boolean,
 }
 
 class Table extends Component<TableProps> {
-    state: { isReduced: boolean };
+    state: { isOpen: boolean };
     subMenu: boolean;
     tableName: string;
 
@@ -45,13 +66,13 @@ class Table extends Component<TableProps> {
         super(props);
         this.onVisibilityChange = this.onVisibilityChange.bind(this);
         this.subMenu = props.subMenu || false;
-        this.state = { isReduced: false };
+        this.state = { isOpen: props.open || false };
         this.tableName = this.props.tableName || "";
 
     }
 
     onVisibilityChange() {
-        this.setState({ isReduced: !this.state.isReduced });
+        this.setState({ isOpen: !this.state.isOpen });
     }
 
     render() {
@@ -60,10 +81,10 @@ class Table extends Component<TableProps> {
                 <div className="flex-none rounded shadow-lg bg-white">
                     <div className="bg-blue-ovh-light h-1 rounded-t" />
                     <div className="font-bold py-3 border-b">
-                        {TableHeader(this.tableName, this.state.isReduced, this.onVisibilityChange)}
+                        {TableHeader(this.tableName, this.state.isOpen, this.onVisibilityChange)}
                     </div>
                     {
-                        !this.state.isReduced &&
+                        this.state.isOpen &&
                         <div>
                             {this.props.children}
                         </div>
@@ -75,10 +96,10 @@ class Table extends Component<TableProps> {
             return (
                 <div className="py-1 border-b">
                     <div>
-                        {TableHeader(this.tableName, this.state.isReduced, this.onVisibilityChange)}
+                        {TableHeader(this.tableName, this.state.isOpen, this.onVisibilityChange)}
                     </div>
                     {
-                        !this.state.isReduced &&
+                        this.state.isOpen &&
                         <div>
                             {this.props.children}
                         </div>
@@ -88,11 +109,11 @@ class Table extends Component<TableProps> {
     }
 }
 
-function TableHeader(tableName: string, isReduced: boolean, callbackHandler: any) {
+function TableHeader(tableName: string, isOpen: boolean, callbackHandler: any) {
     return (
         <div className="flex px-5">
             <button onClick={callbackHandler} className="align-bottom">
-                {isReduced ? <ChevronRight /> : <ChevronDown />}
+                {isOpen ? <ChevronRight /> : <ChevronDown />}
             </button>
             {tableName}
         </div>
@@ -133,12 +154,6 @@ function TableTestCsvValue() {
     );
 }
 
-//CONTENT FOR Jobs Table
-function TableJobsName(props: any) {
-    return (
-        <div>{props.title || "Jobs"}</div>
-    );
-}
 
 function RandomColor() {
     return randomColor({
