@@ -1,6 +1,6 @@
 import { Component, FC, PureComponent, ReactNode } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, XAxisProps } from 'recharts';
+import { LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, XAxisProps } from 'recharts';
 import testData from "../assets/testList.json"
 
 var randomColor = require('randomcolor');
@@ -162,11 +162,21 @@ function RandomColor() {
     })
 }
 
+function MaxValueInList(testData: any) {
+    var maximum = 0;
+    for(var i=0; i<testData.length; i++) {
+        if (parseInt(testData[i]) > maximum)
+            maximum = testData[i];
+    }
+    return maximum;
+}
+
 type testListType = {
     id: string
     color: string,
     activated: boolean
 }
+
 
 const testList: testListType[] = [
     { id: "average", color: RandomColor(), activated: true },
@@ -207,7 +217,7 @@ class TableJobs extends Component {
                         return (
                             <div>
                                 <input id={test.id} checked={test.activated} type="checkbox" className="rounded ml-2 mr-2" onChange={this.handleOnChange.bind(this, test.id)} />
-                                <label htmlFor={test.id}>{test.id}</label>
+                                <label style={{color: test.color}} htmlFor={test.id}>{test.id}</label>
                             </div>
                         );
                     })
@@ -231,6 +241,7 @@ type GraphProps = {
     xLabel: XAxisProps["label"];
     data: any;          // FIXME
     testList: any;      // FIXME
+    //domainMax: number;
 }
 
 function Graph(props: GraphProps) {
@@ -245,17 +256,17 @@ function Graph(props: GraphProps) {
                     height={300}
                     data={props.data}
                     margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
+                        top: 10,
+                        right: 10,
+                        left: 10,
+                        bottom: 20,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" label={props.xLabel} />
-                    <YAxis label="t|s]" />
+                    <CartesianGrid strokeDasharray="3 3"  />
+                    <XAxis dataKey="name" label={{ value: props.xLabel, position: 'bottom' }} />
+                    <YAxis label={{ value: 't[s]', angle: -90, position: 'left' }} />
                     <Tooltip />
-                    <Legend />
+               
                     {props.testList.map((testName: any) => {
                         if (testName.activated) {
                             return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
