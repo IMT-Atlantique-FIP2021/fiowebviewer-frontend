@@ -9,7 +9,7 @@ export default function ResultSummary() {
     return (
         <div className="px-5 py-3">
             <div className="container mx-auto px-5">
-                <div className="grid grid-cols-2 space-x-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:space-x-5">
                     <div className="space-y-5">
                         <Table tableName="FIO Test Name">
                             <Table tableName="FIO user args" subMenu>{TableTestNameUserArgsValue()}</Table>
@@ -39,7 +39,7 @@ export default function ResultSummary() {
                             TABLE CONTENT CPU
                         </Table>
                     </div>
-                    <div>
+                    <div className="space-y-5 py-5 lg:py-0">
                         <Table tableName="Jobs" open >
                             <TableJobs />
                         </Table>
@@ -78,7 +78,7 @@ class Table extends Component<TableProps> {
     render() {
         if (!this.subMenu) {  // FIXME
             return (
-                <div className="flex-none rounded shadow-lg bg-white">
+                <div className="flex-none rounded shadow-lg bg-white ">
                     <div className="bg-blue-ovh-light h-1 rounded-t" />
                     <div className="font-bold py-3 border-b">
                         {TableHeader(this.tableName, this.state.isOpen, this.onVisibilityChange)}
@@ -259,7 +259,7 @@ function Graph(props: GraphProps) {
                         top: 10,
                         right: 10,
                         left: 10,
-                        bottom: 20,
+                        bottom: 30,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3"  />
