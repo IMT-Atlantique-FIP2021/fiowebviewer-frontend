@@ -23,6 +23,7 @@ module.exports = {
       borderWidth: ['hover'],
       backgroundColor: ['odd', 'disabled'],
       opacity: ['disabled'],
+      rotate: ['group-hover'],
     }
   },
   plugins: [
