@@ -3,7 +3,7 @@ import { Tag, XCircle, PlusCircle, Loader } from "react-feather";
 import { Link } from "react-router-dom";
 import ResultListExamples from "../assets/resultList.json";
 
-var _ = require("lodash");
+// var _ = require("lodash");
 
 interface ResultType {
     id: string;
@@ -34,22 +34,39 @@ export default class Table extends Component {
     }
 
     fetchResults() {
-        if (this.state.isFetching) return
+        if (this.state.isFetching) return;
 
         this.setState({ ...this.state, isFetching: true });
-        fetch("/results")
+        fetch("/api/result/")
             .then((response) => response.json())
             .catch((e) => {
                 console.log(e);
                 this.setState({ ...this.state, isFetching: false });
                 return ResultListExamples;
             })
-            .then((resultList:ResultType[]) => (
-                resultList.map((r:ResultType)=>({...r, selected: false}))
-            ))
-            .then((resultList:ResultState[]) => {
-                this.setState({ results: resultList, isFetching: false });
+            .then((resultList: any[]) => {
+                let resultListFormated: ResultType[] = [];
+
+                resultList.forEach((v: any) =>
+                    resultListFormated.push({
+                        id: v["id"],
+                        name: v["hostname"],
+                        tags: [
+                            v["jobs"][0]["jobname"],
+                            v["jobs"][0]["option"]["name"],
+                        ],
+                        submitted_at: v["time"],
+                    })
+                );
+
+                return resultListFormated.map((r: ResultType) => ({
+                    ...r,
+                    selected: false,
+                }));
             })
+            .then((resultList: ResultState[]) => {
+                this.setState({ results: resultList, isFetching: false });
+            });
     }
 
     componentDidMount() {
@@ -117,10 +134,11 @@ export default class Table extends Component {
                     <tbody>{tableLines}</tbody>
                 </table>
 
-                {tableLines.length 
-                    ? TableCompareButton(selectedResult) 
-                    : <TableLoadingLine />
-                }
+                {tableLines.length ? (
+                    TableCompareButton(selectedResult)
+                ) : (
+                    <TableLoadingLine />
+                )}
             </div>
         );
     }
@@ -191,7 +209,7 @@ function TableColumnCheckbox(resultId: string, checkbox: CheckboxProps) {
                 <input
                     {...formattedProps}
                     type="checkbox"
-                    className="rounded" 
+                    className="rounded"
                 />
             </div>
         </td>
