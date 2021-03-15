@@ -4,10 +4,12 @@ import { LabelList,LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, T
 import testData from "../assets/testList.json"
 import testClatPercentile from "../assets/testClatPercentileList.json"
 import testLatencyPercentile from "../assets/testLatencyPercentileList.json"
+import FIOResultExample from "../assets/FIOResultExample3.16.json"
 
 var randomColor = require('randomcolor');
 //Function wich implements the graphical interface for the details on a specific test
 export default function ResultSummary() {
+    GetDataClatPercentile({FIOResultExample})
     return (
         <div className="px-5 py-3">
             <div className="container mx-auto px-5">
@@ -21,14 +23,14 @@ export default function ResultSummary() {
 
                         <Table tableName="READ">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
-                            <Table tableName="Clat Percentiles" subMenu>
+                            <Table tableName="Clat Percentile" subMenu>
                             <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                             </Table>
                         </Table>
 
                         <Table tableName="WRITE">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
-                            <Table tableName="Clat Percentiles" subMenu>
+                            <Table tableName="Clat Percentile" subMenu>
                             <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                             </Table>
                         </Table>
@@ -171,6 +173,20 @@ function RandomColor() {
 }
 
 
+//Function to transform data from FIO into usable data array in Graph for clat percentile
+function GetDataClatPercentile(data: any){
+    var result = [];
+    var keys = Object.keys(data);
+    keys.forEach(function(key){
+        result.push(data[key]);
+    });
+    console.log(result);
+
+    return ;
+}
+
+
+
 //Array in which the colors, names, and activation of the jobs are stored
 type testListType = {
     id: string
@@ -232,11 +248,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -254,7 +270,7 @@ type GraphProps = {
     data: any;          // FIXME
     testList: any;      // FIXME
     valueOnGraph?: boolean;
-    tickCount?: number;
+    xTickCount?: number;
     xType? : any;
     //domainMax: number;
 }
@@ -279,7 +295,7 @@ function Graph(props: GraphProps) {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3"  />
-                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.tickCount || 0} allowDecimals={true} label={{ value: props.xLabel , position: 'bottom' }} />
+                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.xTickCount || 0} allowDecimals={true} label={{ value: props.xLabel , position: 'bottom' }} />
                     <YAxis label={{ value: props.yLabel, angle: -90, position: 'left' }} />
                     <Tooltip />
                     {props.testList.map((testName: any) => {
