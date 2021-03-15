@@ -51,7 +51,7 @@ export default class Table extends Component {
                 resultList.forEach((result: any) =>
                     resultListFormated.push({
                         id: result["id"],
-                        name: result["title"],
+                        name: result["name"],
                         tags: result["tags"],
                         submitted_at: result["time"]
                     })
