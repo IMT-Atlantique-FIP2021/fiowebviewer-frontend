@@ -33,6 +33,7 @@ export default class Table extends Component {
         // this.timer = null;
     }
 
+    // FIXME: Bug when result failed... dont display empty result!
     fetchResults() {
         if (this.state.isFetching) return;
 
@@ -47,15 +48,12 @@ export default class Table extends Component {
             .then((resultList: any[]) => {
                 let resultListFormated: ResultType[] = [];
 
-                resultList.forEach((v: any) =>
+                resultList.forEach((result: any) =>
                     resultListFormated.push({
-                        id: v["id"],
-                        name: v["hostname"],
-                        tags: [
-                            v["jobs"][0]["jobname"],
-                            v["jobs"][0]["option"]["name"],
-                        ],
-                        submitted_at: v["time"],
+                        id: result["id"],
+                        name: result["title"],
+                        tags: result["tags"],
+                        submitted_at: result["time"]
                     })
                 );
 
