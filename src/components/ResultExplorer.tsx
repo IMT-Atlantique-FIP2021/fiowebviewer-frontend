@@ -1,8 +1,9 @@
 import { Component, FC, PureComponent, ReactNode } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
-import { LabelList,LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, YAxisProps } from 'recharts';
+import { LabelList,LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, YAxisProps, Label } from 'recharts';
 import testData from "../assets/testList.json"
 import testClatPercentile from "../assets/testClatPercentileList.json"
+import testLatencyPercentile from "../assets/testLatencyPercentileList.json"
 
 var randomColor = require('randomcolor');
 
@@ -37,7 +38,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="Latency">
-                            TABLE CONTENT Latency
+                        <Graph testList={LatencyPercentileList} data={testLatencyPercentile.filter(dataElement => dataElement.value!=0)} xDatakey="latencypercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                         </Table>
 
                         <Table tableName="CPU">
@@ -160,6 +161,11 @@ function TableTestCsvValue() {
 }
 
 
+//function ListValueZeroRemover(data: [any], label:string) {
+//    return data.filter(dataElement => dataElement.value!=0);
+//}
+
+
 function RandomColor() {
     return randomColor({
         luminosity: 'bright',
@@ -191,6 +197,10 @@ const testList: testListType[] = [
 ];
 
 const ClatPercentileList: testListType[] = [
+    { id: "value", color: "blue", activated: true }
+];
+
+const LatencyPercentileList: testListType[] = [
     { id: "value", color: "blue", activated: true }
 ];
 
