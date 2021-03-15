@@ -6,7 +6,7 @@ import testClatPercentile from "../assets/testClatPercentileList.json"
 import testLatencyPercentile from "../assets/testLatencyPercentileList.json"
 
 var randomColor = require('randomcolor');
-
+//Function wich implements the graphical interface for the details on a specific test
 export default function ResultSummary() {
     return (
         <div className="px-5 py-3">
@@ -57,6 +57,8 @@ export default function ResultSummary() {
     );
 }
 
+
+//Tables are menus shown as opening cells in the interface
 type TableProps = {
     subMenu?: boolean,
     tableName: string,
@@ -160,12 +162,7 @@ function TableTestCsvValue() {
     );
 }
 
-
-//function ListValueZeroRemover(data: [any], label:string) {
-//    return data.filter(dataElement => dataElement.value!=0);
-//}
-
-
+//Function which limits the colors used in the graph lines
 function RandomColor() {
     return randomColor({
         luminosity: 'bright',
@@ -173,22 +170,13 @@ function RandomColor() {
     })
 }
 
-function MaxValueInList(testData: any) {
-    var maximum = 0;
-    for(var i=0; i<testData.length; i++) {
-        if (parseInt(testData[i]) > maximum)
-            maximum = testData[i];
-    }
-    return maximum;
-}
 
+//Array in which the colors, names, and activation of the jobs are stored
 type testListType = {
     id: string
     color: string,
     activated: boolean
 }
-
-
 const testList: testListType[] = [
     { id: "average", color: RandomColor(), activated: true },
     { id: "uv", color: RandomColor(), activated: true },
@@ -256,6 +244,8 @@ class TableJobs extends Component {
 
 }
 
+
+//Graph defines the different graphs in the Result details interface
 type GraphProps = {
     title: string;
     xLabel: YAxisProps["label"];
