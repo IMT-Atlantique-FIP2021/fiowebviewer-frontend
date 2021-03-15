@@ -23,14 +23,14 @@ export default function ResultSummary() {
                         <Table tableName="READ">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
                             <Table tableName="Clat Percentile" subMenu>
-                            <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample)} xDatakey="clat_percentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample)} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                             </Table>
                         </Table>
 
                         <Table tableName="WRITE">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
                             <Table tableName="Clat Percentile" subMenu>
-                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                             </Table>
                         </Table>
 
@@ -39,7 +39,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="Latency">
-                        <Graph testList={LatencyPercentileList} data={testLatencyPercentile.filter(dataElement => dataElement.value!=0)} xDatakey="latencypercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                        <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value!=0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                         </Table>
 
                         <Table tableName="CPU">
@@ -185,13 +185,45 @@ function GetDataClatPercentile(data: any){
 
     for (const key in percentileData) {
         formatedData.push({
-            "clat_percentile": key,
-            "value": percentileData[key]
+            "clat_percentile": key.substr(0,4),
+            "value": percentileData[key].toPrecision(3)/1000000
         })
     }
     // console.log(formatedData);
     return formatedData;
 }
+
+type LatencyType = {
+    "latency": number
+    "value": number
+}
+
+//Function to transform data from FIO into usable data array in Graph for latency percentile
+function GetDataLatency(data: any){
+    console.log(data)
+    const DataUs = data["jobs"][0]["latency_us"]
+    const DataMs = data["jobs"][0]["latency_ms"]
+
+    let formatedData: LatencyType[] = [];
+
+    for (const key in DataUs) {
+        formatedData.push({
+            "latency": (+key) / 1000,
+            "value": DataUs[key].toPrecision(4)
+        })
+    }
+
+    for (const key in DataMs) {
+        formatedData.push({
+            "latency": (+key) ,
+            "value": DataMs[key].toPrecision(4)
+        })
+    }
+
+    // console.log(formatedData);
+    return formatedData;
+}
+
 
 
 
@@ -256,11 +288,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={10} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -271,7 +303,7 @@ class TableJobs extends Component {
 
 //Graph defines the different graphs in the Result details interface
 type GraphProps = {
-    title: string;
+    title?: string;
     xLabel: YAxisProps["label"];
     yLabel: YAxisProps["label"];
     xDatakey: string;
