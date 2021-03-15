@@ -1,9 +1,7 @@
 import { Component, FC, PureComponent, ReactNode } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
-import { LabelList,LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, YAxisProps, Label } from 'recharts';
+import { LabelList, LineChart, ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, YAxisProps, Label } from 'recharts';
 import testData from "../assets/testList.json"
-import testClatPercentile from "../assets/testClatPercentileList.json"
-import testLatencyPercentile from "../assets/testLatencyPercentileList.json"
 import FIOResultExample from "../assets/FIOResultExample3.16.json"
 
 var randomColor = require('randomcolor');
@@ -21,16 +19,20 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="READ">
-                            <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Overview" subMenu>
+                                READ OVERVIEW
+                            </Table>
                             <Table tableName="Clat Percentile" subMenu>
-                            <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample)} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                                <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "read")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
                         <Table tableName="WRITE">
-                            <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Overview" subMenu>
+                                WRITE OVERVIEW
+                            </Table>
                             <Table tableName="Clat Percentile" subMenu>
-                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                                <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "write")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
@@ -39,7 +41,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="Latency">
-                        <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value!=0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="CPU">
@@ -177,16 +179,16 @@ type ClatPercentileType = {
 }
 
 //Function to transform data from FIO into usable data array in Graph for clat percentile
-function GetDataClatPercentile(data: any){
+function GetDataClatPercentile(data: any, rw: string) {
     console.log(data)
-    const percentileData = data["jobs"][0]["read"]["clat_ns"]["percentile"]
-    
+    const percentileData = data["jobs"][0][rw]["clat_ns"]["percentile"]
+
     let formatedData: ClatPercentileType[] = [];
 
     for (const key in percentileData) {
         formatedData.push({
-            "clat_percentile": key.substr(0,4),
-            "value": percentileData[key].toPrecision(3)/1000000
+            "clat_percentile": Number.parseFloat(key).toString(),
+            "value": percentileData[key].toPrecision(3) / 1000000
         })
     }
     // console.log(formatedData);
@@ -199,7 +201,7 @@ type LatencyType = {
 }
 
 //Function to transform data from FIO into usable data array in Graph for latency percentile
-function GetDataLatency(data: any){
+function GetDataLatency(data: any) {
     console.log(data)
     const DataUs = data["jobs"][0]["latency_us"]
     const DataMs = data["jobs"][0]["latency_ms"]
@@ -215,7 +217,7 @@ function GetDataLatency(data: any){
 
     for (const key in DataMs) {
         formatedData.push({
-            "latency": (+key) ,
+            "latency": (+key),
             "value": DataMs[key].toPrecision(4)
         })
     }
@@ -281,18 +283,18 @@ class TableJobs extends Component {
                         return (
                             <div>
                                 <input id={test.id} checked={test.activated} type="checkbox" className="rounded ml-2 mr-2" onChange={this.handleOnChange.bind(this, test.id)} />
-                                <label style={{color: test.color}} htmlFor={test.id}>{test.id}</label>
+                                <label style={{ color: test.color }} htmlFor={test.id}>{test.id}</label>
                             </div>
                         );
                     })
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length/2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -311,7 +313,7 @@ type GraphProps = {
     testList: any;      // FIXME
     valueOnGraph?: boolean;
     xTickCount?: number;
-    xType? : any;
+    xType?: any;
     //domainMax: number;
 }
 
@@ -334,15 +336,15 @@ function Graph(props: GraphProps) {
                         bottom: 35,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3"  />
-                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.xTickCount || 0} allowDecimals={true} label={{ value: props.xLabel , position: 'bottom' }} />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.xTickCount || 0} allowDecimals={true} label={{ value: props.xLabel, position: 'bottom' }} />
                     <YAxis label={{ value: props.yLabel, angle: -90, position: 'left' }} />
                     <Tooltip />
                     {props.testList.map((testName: any) => {
                         if (testName.activated) {
                             return (
                                 <Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }}>
-                                {valueOnGraph? <LabelList dataKey={testName.id} position="top" offset={10} className="text-sm"/> : ""}
+                                    {valueOnGraph ? <LabelList dataKey={testName.id} position="top" offset={10} className="text-sm" /> : ""}
                                 </Line>);
                         }
                     })}
