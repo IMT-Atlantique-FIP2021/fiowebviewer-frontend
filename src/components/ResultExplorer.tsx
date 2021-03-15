@@ -232,11 +232,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} tickCount={10} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -254,6 +254,8 @@ type GraphProps = {
     data: any;          // FIXME
     testList: any;      // FIXME
     valueOnGraph?: boolean;
+    tickCount?: number;
+    xType? : any;
     //domainMax: number;
 }
 
@@ -277,7 +279,7 @@ function Graph(props: GraphProps) {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3"  />
-                    <XAxis dataKey={props.xDatakey} label={{ value: props.xLabel , position: 'bottom' }} />
+                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.tickCount || 0} allowDecimals={true} label={{ value: props.xLabel , position: 'bottom' }} />
                     <YAxis label={{ value: props.yLabel, angle: -90, position: 'left' }} />
                     <Tooltip />
                     {props.testList.map((testName: any) => {
