@@ -294,7 +294,7 @@ function Graph(props: GraphProps) {
                         if (testName.activated) {
                             return (
                                 <Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }}>
-                                {valueOnGraph? <LabelList dataKey={testName.id} position="top" className="text-sm"/> : ""}
+                                {valueOnGraph? <LabelList dataKey={testName.id} position="top" offset={10} className="text-sm"/> : ""}
                                 </Line>);
                         }
                     })}
