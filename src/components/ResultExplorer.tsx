@@ -9,7 +9,6 @@ import FIOResultExample from "../assets/FIOResultExample3.16.json"
 var randomColor = require('randomcolor');
 //Function wich implements the graphical interface for the details on a specific test
 export default function ResultSummary() {
-    GetDataClatPercentile({FIOResultExample})
     return (
         <div className="px-5 py-3">
             <div className="container mx-auto px-5">
@@ -24,7 +23,7 @@ export default function ResultSummary() {
                         <Table tableName="READ">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
                             <Table tableName="Clat Percentile" subMenu>
-                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample)} xDatakey="clat_percentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                             </Table>
                         </Table>
 
@@ -172,24 +171,33 @@ function RandomColor() {
     })
 }
 
+type ClatPercentileType = {
+    "clat_percentile": string
+    "value": number
+}
 
 //Function to transform data from FIO into usable data array in Graph for clat percentile
 function GetDataClatPercentile(data: any){
-    var result = [];
-    var keys = Object.keys(data);
-    keys.forEach(function(key){
-        result.push(data[key]);
-    });
-    console.log(result);
+    console.log(data)
+    const percentileData = data["jobs"][0]["read"]["clat_ns"]["percentile"]
+    
+    let formatedData: ClatPercentileType[] = [];
 
-    return ;
+    for (const key in percentileData) {
+        formatedData.push({
+            "clat_percentile": key,
+            "value": percentileData[key]
+        })
+    }
+    // console.log(formatedData);
+    return formatedData;
 }
 
 
 
 //Array in which the colors, names, and activation of the jobs are stored
 type testListType = {
-    id: string
+    id: string,
     color: string,
     activated: boolean
 }
