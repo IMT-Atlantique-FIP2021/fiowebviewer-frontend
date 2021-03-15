@@ -1,7 +1,9 @@
 import { Component, FC, PureComponent, ReactNode } from "react";
 import { ChevronRight, ChevronDown } from "react-feather";
-import { LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, XAxisProps } from 'recharts';
+import { LabelList,LineChart,ReferenceLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, YAxisProps, Label } from 'recharts';
 import testData from "../assets/testList.json"
+import testClatPercentile from "../assets/testClatPercentileList.json"
+import testLatencyPercentile from "../assets/testLatencyPercentileList.json"
 
 var randomColor = require('randomcolor');
 
@@ -19,12 +21,16 @@ export default function ResultSummary() {
 
                         <Table tableName="READ">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
-                            <Table tableName="Clat Percentiles" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Clat Percentiles" subMenu>
+                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            </Table>
                         </Table>
 
                         <Table tableName="WRITE">
                             <Table tableName="Overview" subMenu>{TableTestNameOutputValue()}</Table>
-                            <Table tableName="Clat Percentiles" subMenu>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Clat Percentiles" subMenu>
+                            <Graph testList={ClatPercentileList} data={testClatPercentile} xDatakey="clatpercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
+                            </Table>
                         </Table>
 
                         <Table tableName="IO Depth">
@@ -32,7 +38,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="Latency">
-                            TABLE CONTENT Latency
+                        <Graph testList={LatencyPercentileList} data={testLatencyPercentile.filter(dataElement => dataElement.value!=0)} xDatakey="latencypercentile" title="" xLabel="%" yLabel="ms" valueOnGraph={true}/>
                         </Table>
 
                         <Table tableName="CPU">
@@ -155,6 +161,11 @@ function TableTestCsvValue() {
 }
 
 
+//function ListValueZeroRemover(data: [any], label:string) {
+//    return data.filter(dataElement => dataElement.value!=0);
+//}
+
+
 function RandomColor() {
     return randomColor({
         luminosity: 'bright',
@@ -184,6 +195,15 @@ const testList: testListType[] = [
     { id: "pv", color: RandomColor(), activated: true },
     { id: "amt", color: RandomColor(), activated: true }
 ];
+
+const ClatPercentileList: testListType[] = [
+    { id: "value", color: "blue", activated: true }
+];
+
+const LatencyPercentileList: testListType[] = [
+    { id: "value", color: "blue", activated: true }
+];
+
 
 //Define the Table Jobs Content
 class TableJobs extends Component {
@@ -224,11 +244,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} title="bw" xLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} title="iops" xLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} title="lat" xLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} title="slat" xLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} title="clat" xLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -238,16 +258,20 @@ class TableJobs extends Component {
 
 type GraphProps = {
     title: string;
-    xLabel: XAxisProps["label"];
+    xLabel: YAxisProps["label"];
+    yLabel: YAxisProps["label"];
+    xDatakey: string;
     data: any;          // FIXME
     testList: any;      // FIXME
+    valueOnGraph?: boolean;
     //domainMax: number;
 }
 
 function Graph(props: GraphProps) {
+    var valueOnGraph = props.valueOnGraph || false;
     return (
         <div className="h-60 p-5" >
-            <div className="text-center">
+            <div className="text-lg text-center">
                 {props.title}
             </div>
             <ResponsiveContainer width="100%" height="100%">
@@ -259,17 +283,19 @@ function Graph(props: GraphProps) {
                         top: 10,
                         right: 10,
                         left: 10,
-                        bottom: 30,
+                        bottom: 35,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3"  />
-                    <XAxis dataKey="name" label={{ value: props.xLabel, position: 'bottom' }} />
-                    <YAxis label={{ value: 't[s]', angle: -90, position: 'left' }} />
+                    <XAxis dataKey={props.xDatakey} label={{ value: props.xLabel , position: 'bottom' }} />
+                    <YAxis label={{ value: props.yLabel, angle: -90, position: 'left' }} />
                     <Tooltip />
-               
                     {props.testList.map((testName: any) => {
                         if (testName.activated) {
-                            return (<Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }} />);
+                            return (
+                                <Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }}>
+                                {valueOnGraph? <LabelList dataKey={testName.id} position="top" offset={10} className="text-sm"/> : ""}
+                                </Line>);
                         }
                     })}
                 </LineChart>
