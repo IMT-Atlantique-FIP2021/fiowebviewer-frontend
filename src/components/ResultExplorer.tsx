@@ -18,8 +18,8 @@ export default function ResultSummary() {
                             <Table tableName="CSV" subMenu>{TableTestCsvValue()}</Table>
                         </Table>
 
-                        <Table tableName="READ">
-                            <Table tableName="Overview" subMenu>
+                        <Table tableName="READ" open>
+                            <Table tableName="Overview" subMenu open>
                                 {TableRWOverview(FIOResultExample, "read")}
                             </Table>
                             <Table tableName="Clat Percentile" subMenu>
@@ -173,15 +173,43 @@ function TableRWOverview(data: any, rw: string) {
     const io = (readData["io_kbytes"] / 1000).toFixed(2) + "MB";
     const bw = (readData["bw"] / 1000).toFixed(2) + "MB/s";
     const iops = readData["iops"].toFixed(2);
-    const runtime = Math.trunc((readData["runtime"]/3600000))+"h "+Math.trunc((readData["runtime"]/60000 %60))+"m "+(readData["runtime"]/1000 % 60).toFixed(0)+"s" 
+    const runtime = Math.trunc((readData["runtime"] / 3600000)) + "h " + Math.trunc((readData["runtime"] / 60000 % 60)) + "m " + (readData["runtime"] / 1000 % 60).toFixed(0) + "s"
+
+    const slat = (readData["slat_ns"])
+    const clat = (readData["clat_ns"])
+    const lat = (readData["lat_ns"])
+
+    const slat_min = (slat["min"] / 1000000).toFixed(3) + " ms"
+    const slat_max = (slat["max"] / 1000000).toFixed(3) + " ms"
+    const slat_mean = (slat["mean"] / 1000000).toFixed(3) + " ms"
+    const slat_stdev = (slat["stddev"] / 1000000).toFixed(3) + " ms"
+    const clat_min = (clat["min"] / 1000000).toFixed(3) + " ms"
+    const clat_max = (clat["max"] / 1000000).toFixed(3) + " ms"
+    const clat_mean = (clat["mean"] / 1000000).toFixed(3) + " ms"
+    const clat_stdev = (clat["stddev"] / 1000000).toFixed(3) + " ms"
+    const lat_min = (lat["min"] / 1000000).toFixed(3) + " ms"
+    const lat_max = (lat["max"] / 1000000).toFixed(3) + " ms"
+    const lat_mean = (lat["mean"] / 1000000).toFixed(3) + " ms"
+    const lat_stdev = (lat["stddev"] / 1000000).toFixed(3) + " ms"
+
+    const bw_min = (readData["bw_min"] / 1000).toFixed(2) + " MB/s"
+    const bw_max = (readData["bw_max"] / 1000).toFixed(2) + " MB/s"
+    const bw_mean = (readData["bw_mean"] / 1000).toFixed(2) + " MB/s"
+    const bw_stdev = (readData["bw_dev"] / 1000).toFixed(2) + " MB/s"
+    const bw_agg = (readData["bw_agg"]).toFixed(2) + " %"
 
     let clatPercentileClassName = "grid grid-flow-col grid-cols-" + percentileData.length + "grid-rows-2";
 
+    const clatPercentileGrid = (
+        <div>
+            OK
+        </div>
+    );
 
 
     return (
         <div>
-            <div className="grid grid-flow-col grid-flow-row grid-cols-4 grid-rows-2 gap-4">
+            <div className="grid grid-flow-col grid-flow-row grid-cols-4 grid-rows-2 text-sm divide-y divide-x text-center">
                 <div>io</div>
                 <div>{io}</div>
                 <div>bw</div>
@@ -190,7 +218,44 @@ function TableRWOverview(data: any, rw: string) {
                 <div>{iops}</div>
                 <div>runtime</div>
                 <div>{runtime}</div>
+            </div>
 
+            <div className="grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-4 text-sm  divide-y divide-x text-center">
+                <div></div>
+                <div>SLAT</div>
+                <div>CLAT</div>
+                <div>LAT</div>
+                <div>MIN</div>
+                <div>{slat_min}</div>
+                <div>{clat_min}</div>
+                <div>{lat_min}</div>
+                <div>MAX</div>
+                <div>{slat_max}</div>
+                <div>{clat_max}</div>
+                <div>{lat_max}</div>
+                <div>MEAN</div>
+                <div>{slat_mean}</div>
+                <div>{clat_mean}</div>
+                <div>{lat_mean}</div>
+                <div>STDEV</div>
+                <div>{slat_stdev}</div>
+                <div>{clat_stdev}</div>
+                <div>{lat_stdev}</div>
+            </div>
+            <div className="text-lg text-center">
+                BW
+            </div>
+            <div className="grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-2 text-sm divide-y divide-x text-center">
+                <div>MIN</div>
+                <div>{bw_min}</div>
+                <div>MAX</div>
+                <div>{bw_max}</div>
+                <div>MEAN</div>
+                <div>{bw_mean}</div>
+                <div>STDEV</div>
+                <div>{bw_stdev}</div>
+                <div>PER</div>
+                <div>{bw_agg}</div>
             </div>
 
             <div className={clatPercentileClassName}>
@@ -229,7 +294,7 @@ function GetDataClatPercentile(data: any, rw: string) {
     for (const key in percentileData) {
         formatedData.push({
             "clat_percentile": Number.parseFloat(key).toString(),
-            "value": percentileData[key].toPrecision(3) / 1000000
+            "value": percentileData[key].toPrecision(3)/ 1000000
         })
     }
     // console.log(formatedData);
@@ -259,7 +324,7 @@ function GetDataLatency(data: any) {
     for (const key in DataMs) {
         formatedData.push({
             "latency": (+key),
-            "value": DataMs[key].toPrecision(4)
+            "value": DataMs[key].toPrecision(3)
         })
     }
 
@@ -385,7 +450,7 @@ function Graph(props: GraphProps) {
                         if (testName.activated) {
                             return (
                                 <Line type="linear" dataKey={testName.id} stroke={testName.color} activeDot={{ r: 5 }}>
-                                    {valueOnGraph ? <LabelList dataKey={testName.id} position="top" offset={10} className="text-sm" /> : ""}
+                                    {valueOnGraph ? <LabelList dataKey={testName.id} position="top" offset={10} className="text-xs" /> : ""}
                                 </Line>);
                         }
                     })}
