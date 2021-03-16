@@ -41,7 +41,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="Latency">
-                            <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" xLabel="%" yLabel="ms" valueOnGraph={true} />
+                            <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" xLabel="ms" yLabel="%" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="CPU">
