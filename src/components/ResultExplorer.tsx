@@ -20,7 +20,7 @@ export default function ResultSummary() {
 
                         <Table tableName="READ">
                             <Table tableName="Overview" subMenu>
-                                READ OVERVIEW
+                                {TableRWOverview(FIOResultExample, "read")}
                             </Table>
                             <Table tableName="Clat Percentile" subMenu>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "read")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
@@ -29,7 +29,7 @@ export default function ResultSummary() {
 
                         <Table tableName="WRITE">
                             <Table tableName="Overview" subMenu>
-                                WRITE OVERVIEW
+                                {TableRWOverview(FIOResultExample, "write")}
                             </Table>
                             <Table tableName="Clat Percentile" subMenu>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "write")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
@@ -165,6 +165,46 @@ function TableTestCsvValue() {
     );
 }
 
+//Function to show data from FIO read section into a datasheet on the interface
+function TableRWOverview(data: any, rw: string) {
+    const percentileData = GetDataClatPercentile(data, rw);
+    const readData = data["jobs"][0][rw];
+
+    const io = (readData["io_kbytes"] / 1000).toFixed(2) + "MB";
+    const bw = (readData["bw"] / 1000).toFixed(2) + "MB/s";
+    const iops = readData["iops"].toFixed(2);
+    const runtime = Math.trunc((readData["runtime"]/3600000))+"h "+Math.trunc((readData["runtime"]/60000 %60))+"m "+(readData["runtime"]/1000 % 60).toFixed(0)+"s" 
+
+    let clatPercentileClassName = "grid grid-flow-col grid-cols-" + percentileData.length + "grid-rows-2";
+
+
+
+    return (
+        <div>
+            <div className="grid grid-flow-col grid-flow-row grid-cols-4 grid-rows-2 gap-4">
+                <div>io</div>
+                <div>{io}</div>
+                <div>bw</div>
+                <div>{bw}</div>
+                <div>iops</div>
+                <div>{iops}</div>
+                <div>runtime</div>
+                <div>{runtime}</div>
+
+            </div>
+
+            <div className={clatPercentileClassName}>
+            </div>
+
+        </div>
+
+
+    );
+
+}
+
+
+
 //Function which limits the colors used in the graph lines
 function RandomColor() {
     return randomColor({
@@ -178,9 +218,10 @@ type ClatPercentileType = {
     "value": number
 }
 
+
+
 //Function to transform data from FIO into usable data array in Graph for clat percentile
 function GetDataClatPercentile(data: any, rw: string) {
-    console.log(data)
     const percentileData = data["jobs"][0][rw]["clat_ns"]["percentile"]
 
     let formatedData: ClatPercentileType[] = [];

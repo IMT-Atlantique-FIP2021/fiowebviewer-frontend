@@ -29,7 +29,7 @@
           "bw_bytes" : 192880175,
           "bw" : 188359,
           "iops" : 10115.961346,
-          "runtime" : 3001,
+          "runtime" : 79457778,
           "total_ios" : 30358,
           "short_ios" : 0,
           "drop_ios" : 0,
