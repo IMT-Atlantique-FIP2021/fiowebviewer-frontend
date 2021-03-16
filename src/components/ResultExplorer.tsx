@@ -18,8 +18,8 @@ export default function ResultSummary() {
                             <Table tableName="CSV" subMenu>{TableTestCsvValue()}</Table>
                         </Table>
 
-                        <Table tableName="READ" open>
-                            <Table tableName="Overview" subMenu open>
+                        <Table tableName="READ">
+                            <Table tableName="Overview" subMenu>
                                 {TableRWOverview(FIOResultExample, "read")}
                             </Table>
                             <Table tableName="Clat Percentile" subMenu>
@@ -37,7 +37,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="IO Depth">
-                            TABLE CONTENT IO DEPTH
+                        <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="Latency">
@@ -278,12 +278,12 @@ function RandomColor() {
     })
 }
 
+
+
 type ClatPercentileType = {
     "clat_percentile": string
     "value": number
 }
-
-
 
 //Function to transform data from FIO into usable data array in Graph for clat percentile
 function GetDataClatPercentile(data: any, rw: string) {
@@ -300,6 +300,29 @@ function GetDataClatPercentile(data: any, rw: string) {
     // console.log(formatedData);
     return formatedData;
 }
+
+type IODepthType = {
+    "io_depth": string
+    "value": number
+}
+
+//Function to transform data from FIO into usable data array in Graph for IO Depth
+function GetDataIODepth(data: any) {
+    const Data = data["jobs"][0]["iodepth_level"]
+
+    let formatedData: IODepthType[] = [];
+
+    for (const key in Data) {
+        formatedData.push({
+            "io_depth": key,
+            "value": Data[key].toPrecision(3)
+        })
+    }
+    // console.log(formatedData);
+    return formatedData;
+}
+
+
 
 type LatencyType = {
     "latency": number
@@ -356,6 +379,9 @@ const LatencyPercentileList: testListType[] = [
     { id: "value", color: "blue", activated: true }
 ];
 
+const IODepthList: testListType[] = [
+    { id: "value", color: "blue", activated: true }
+];
 
 //Define the Table Jobs Content
 class TableJobs extends Component {
@@ -436,7 +462,7 @@ function Graph(props: GraphProps) {
                     height={300}
                     data={props.data}
                     margin={{
-                        top: 10,
+                        top: 15,
                         right: 15,
                         left: 10,
                         bottom: 35,
