@@ -37,11 +37,11 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="IO Depth">
-                        <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true} />
+                        <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="io_depth" xLabel="Depth Level" yLabel="%" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="Latency">
-                            <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" title="" xLabel="%" yLabel="ms" valueOnGraph={true} />
+                            <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" xLabel="%" yLabel="ms" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="CPU">
@@ -318,6 +318,7 @@ function GetDataIODepth(data: any) {
             "value": Data[key].toPrecision(3)
         })
     }
+    console.log(formatedData);
     // console.log(formatedData);
     return formatedData;
 }
@@ -331,7 +332,6 @@ type LatencyType = {
 
 //Function to transform data from FIO into usable data array in Graph for latency percentile
 function GetDataLatency(data: any) {
-    console.log(data)
     const DataUs = data["jobs"][0]["latency_us"]
     const DataMs = data["jobs"][0]["latency_ms"]
 
