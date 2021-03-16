@@ -331,7 +331,7 @@ function Graph(props: GraphProps) {
                     data={props.data}
                     margin={{
                         top: 10,
-                        right: 10,
+                        right: 15,
                         left: 10,
                         bottom: 35,
                     }}
