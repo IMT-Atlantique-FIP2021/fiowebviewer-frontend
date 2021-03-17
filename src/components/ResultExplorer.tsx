@@ -56,7 +56,7 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                 <div className="container mx-auto px-5">
                     <div className="grid grid-cols-1 lg:grid-cols-2 lg:space-x-5">
                         <div className="space-y-5">
-                            <Table tableName="FIO Test Name" open>
+                            <Table tableName={"RESULT\: "+this.state.data["name"]} open>
                                 <Table tableName="FIO user args" subMenu open>
                                     {TableTestNameUserArgsValue()}
                                 </Table>
