@@ -96,8 +96,16 @@ export default class Table extends Component {
     }
 
     async handleOnDeleteClick(id: string) {
-        const delete_result_url = "/api/result/" + id;
-        await fetch(delete_result_url, { method: "DELETE" });
+        const delete_result_url = "/api/result/";
+        await fetch(delete_result_url + id, { method: "DELETE" });
+        this.fetchResults();
+    }
+
+    async handleOnDeleteSelectedClick() {
+        const delete_result_url = "/api/result/";
+        this.selectedResult().forEach((id: string) => {
+            fetch(delete_result_url+id, { method: "DELETE" });
+        })
         this.fetchResults();
     }
 
@@ -135,7 +143,8 @@ export default class Table extends Component {
                 {TableContent(
                     this.state.loading,
                     this.state.results,
-                    this.selectedResult()
+                    this.selectedResult(),
+                    this.handleOnDeleteSelectedClick.bind(this)
                 )}
             </div>
         );
@@ -145,7 +154,8 @@ export default class Table extends Component {
 function TableContent(
     loading: boolean,
     results: ResultState[],
-    selectedResult: string[]
+    selectedResult: string[],
+    onDeleteClick: () => void
 ) {
     if (loading) {
         // Currently fetching results
@@ -172,7 +182,7 @@ function TableContent(
         return (
             <div className="flex justify-evenly p-4">
                 {TableCompareButton(selectedResult)}
-                {TableDeleteButton(selectedResult)}
+                {TableDeleteButton(selectedResult, onDeleteClick)}
             </div>
         );
     }
@@ -323,25 +333,15 @@ function TableCompareButton(selectedResults: string[]) {
     );
 }
 
-function TableDeleteButton(selectedResults: string[]) {
-    const queryParams = "?".concat(
-        selectedResults.map((r) => "id=" + r).join("&")
-    );
-
+function TableDeleteButton(selectedResults: string[], onDeleteClick: () => void) {
     return (
-        <Link
-            to={{
-                pathname: "/delete",
-                search: queryParams,
-            }}
+        <button
+            {...{ disabled: selectedResults.length <= 0 }}
+            onClick={onDeleteClick}
+            className="disabled:opacity-50 disabled:bg-gray-400 bg-red-600 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
         >
-            <button
-                {...{ disabled: selectedResults.length <= 0 }}
-                className="disabled:opacity-50 disabled:bg-gray-400 bg-red-600 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
-            >
-                Delete {selectedResults.length} result
-                {selectedResults.length > 1 ? "s" : ""}
-            </button>
-        </Link>
+            Delete {selectedResults.length} result
+            {selectedResults.length > 1 ? "s" : ""}
+        </button>
     );
 }
