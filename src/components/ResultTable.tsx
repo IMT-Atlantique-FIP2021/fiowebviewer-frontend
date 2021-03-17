@@ -1,15 +1,15 @@
 import { Component } from "react";
-import { Tag, XCircle, PlusCircle, Loader, Coffee } from "react-feather";
 import { Link } from "react-router-dom";
+import { Tag, XCircle, PlusCircle, Loader, Coffee } from "react-feather";
 
-interface ResultType {
+interface Result {
     id: string;
     name: string;
     tags: string[];
     submitted_at: string;
 }
 
-interface ResultState extends ResultType {
+interface ResultState extends Result {
     selected: boolean;
 }
 
@@ -95,6 +95,12 @@ export default class Table extends Component {
         this.setState(newState);
     }
 
+    async handleOnDeleteClick(id: string) {
+        const delete_result_url = "/api/result/" + id;
+        await fetch(delete_result_url, { method: "DELETE" });
+        this.fetchResults();
+    }
+
     render() {
         const results = this.state.results;
         return (
@@ -112,6 +118,12 @@ export default class Table extends Component {
                                 checkbox={{
                                     checked: r.selected,
                                     onChange: this.handleOnCheckbox_Select.bind(
+                                        this,
+                                        r.id
+                                    ),
+                                }}
+                                actions={{
+                                    onDeleteClick: this.handleOnDeleteClick.bind(
                                         this,
                                         r.id
                                     ),
@@ -189,8 +201,9 @@ function TableHeader(checkbox: CheckboxProps) {
 }
 
 type TableLineProps = {
-    result: ResultType;
+    result: Result;
     checkbox: CheckboxProps;
+    actions: ActionProps;
 };
 
 function TableLine(props: TableLineProps) {
@@ -200,7 +213,7 @@ function TableLine(props: TableLineProps) {
             {TableColumnJobname(props.result.name, props.result.id)}
             {TableColumnTags(props.result.tags)}
             {TableColumnSubmittedat(props.result.submitted_at)}
-            {TableColumnActions()}
+            {TableColumnActions(props.actions)}
         </tr>
     );
 }
@@ -268,11 +281,15 @@ function TableColumnSubmittedat(submitted_at: string) {
     return <td className="px-4 text-xs text-center">{submitted_at}</td>;
 }
 
-function TableColumnActions() {
+type ActionProps = {
+    onDeleteClick: () => void;
+};
+
+function TableColumnActions(props: ActionProps) {
     return (
         <td className="px-4">
             <div className="flex flex-row justify-start space-x-1">
-                <button>
+                <button onClick={props.onDeleteClick}>
                     <XCircle size={20} className="text-red-500" />
                 </button>
                 <button>
