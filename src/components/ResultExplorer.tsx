@@ -87,7 +87,7 @@ class Table extends Component<TableProps> {
         this.onVisibilityChange = this.onVisibilityChange.bind(this);
         this.subMenu = props.subMenu || false;
         this.state = { isOpen: props.open || false };
-        this.tableName = this.props.tableName || "";
+        this.tableName = props.tableName || "";
 
     }
 
