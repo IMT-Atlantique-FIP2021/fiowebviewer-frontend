@@ -12,39 +12,39 @@ export default function ResultSummary() {
             <div className="container mx-auto px-5">
                 <div className="grid grid-cols-1 lg:grid-cols-2 lg:space-x-5">
                     <div className="space-y-5">
-                        <Table tableName="FIO Test Name">
-                            <Table tableName="FIO user args" subMenu>{TableTestNameUserArgsValue()}</Table>
-                            <Table tableName="Output" subMenu>{TableTestNameOutputValue()}</Table>
-                            <Table tableName="CSV" subMenu>{TableTestCsvValue()}</Table>
+                        <Table tableName="FIO Test Name" open>
+                            <Table tableName="FIO user args" subMenu open>{TableTestNameUserArgsValue()}</Table>
+                            <Table tableName="Output" subMenu open>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="CSV" subMenu open>{TableTestCsvValue()}</Table>
                         </Table>
 
-                        <Table tableName="READ">
-                            <Table tableName="Overview" subMenu>
+                        <Table tableName="READ" open>
+                            <Table tableName="Overview" subMenu open>
                                 {TableRWOverview(FIOResultExample, "read")}
                             </Table>
-                            <Table tableName="Clat Percentile" subMenu>
+                            <Table tableName="Clat Percentile" subMenu open>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "read")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
-                        <Table tableName="WRITE">
-                            <Table tableName="Overview" subMenu>
+                        <Table tableName="WRITE" open>
+                            <Table tableName="Overview" subMenu open>
                                 {TableRWOverview(FIOResultExample, "write")}
                             </Table>
-                            <Table tableName="Clat Percentile" subMenu>
+                            <Table tableName="Clat Percentile" subMenu open>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "write")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
-                        <Table tableName="IO Depth">
+                        <Table tableName="IO Depth" open>
                             <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="io_depth" xLabel="Depth Level" yLabel="%" valueOnGraph={true} />
                         </Table>
 
-                        <Table tableName="Latency">
+                        <Table tableName="Latency" open>
                             <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" xLabel="ms" yLabel="%" valueOnGraph={true} />
                         </Table>
 
-                        <Table tableName="CPU">
+                        <Table tableName="CPU" open>
                             {TableCPU(FIOResultExample)}
                         </Table>
                     </div>
