@@ -37,7 +37,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="IO Depth">
-                        <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="io_depth" xLabel="Depth Level" yLabel="%" valueOnGraph={true} />
+                            <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="io_depth" xLabel="Depth Level" yLabel="%" valueOnGraph={true} />
                         </Table>
 
                         <Table tableName="Latency">
@@ -45,7 +45,7 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="CPU">
-                            TABLE CONTENT CPU
+                            {TableCPU(FIOResultExample)}
                         </Table>
                     </div>
                     <div className="space-y-5 py-5 lg:py-0">
@@ -206,7 +206,6 @@ function TableRWOverview(data: any, rw: string) {
         </div>
     );
 
-
     return (
         <div>
             <div className="grid grid-flow-col grid-flow-row grid-cols-4 grid-rows-2 text-sm divide-y divide-x text-center">
@@ -269,6 +268,24 @@ function TableRWOverview(data: any, rw: string) {
 }
 
 
+function TableCPU(data: any) {
+    const jobData = data["jobs"][0]
+    const cpu_usr = jobData["usr_cpu"] + " %"
+    const cpu_sys = jobData["sys_cpu"] + " %"
+
+    return (
+        <div>
+            <div className="grid grid-flow-col grid-flow-row grid-cols-2 grid-rows-2 text-sm divide-y divide-x text-center">
+                <div>USER</div>
+                <div>{cpu_usr}</div>
+                <div>SYSTEM</div>
+                <div>{cpu_sys}</div>
+
+            </div>
+        </div>
+    )
+}
+
 
 //Function which limits the colors used in the graph lines
 function RandomColor() {
@@ -294,7 +311,7 @@ function GetDataClatPercentile(data: any, rw: string) {
     for (const key in percentileData) {
         formatedData.push({
             "clat_percentile": Number.parseFloat(key).toString(),
-            "value": percentileData[key].toPrecision(3)/ 1000000
+            "value": percentileData[key].toPrecision(3) / 1000000
         })
     }
     // console.log(formatedData);
@@ -318,7 +335,6 @@ function GetDataIODepth(data: any) {
             "value": Data[key].toPrecision(3)
         })
     }
-    console.log(formatedData);
     // console.log(formatedData);
     return formatedData;
 }
@@ -422,11 +438,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
                 </div>
             </div>
         );
@@ -469,7 +485,7 @@ function Graph(props: GraphProps) {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.xTickCount || 0} allowDecimals={true} label={{ value: props.xLabel, position: 'bottom' }} />
+                    <XAxis dataKey={props.xDatakey} type={props.xType || "category"} tickCount={props.xTickCount || 5} allowDecimals={true} label={{ value: props.xLabel, position: 'bottom' }} />
                     <YAxis label={{ value: props.yLabel, angle: -90, position: 'left' }} />
                     <Tooltip />
                     {props.testList.map((testName: any) => {
