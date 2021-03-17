@@ -19,28 +19,37 @@ export default function ResultSummary() {
                         </Table>
 
                         <Table tableName="READ" open>
-                            <Table tableName="Overview" subMenu open>
+                            <Table tableName="OVERVIEW" subMenu open>
                                 {TableRWOverview(FIOResultExample, "read")}
                             </Table>
-                            <Table tableName="Clat Percentile" subMenu open>
+                            <Table tableName="COMPLETION LATENCY PERCENTILE" subMenu open>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "read")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
                         <Table tableName="WRITE" open>
-                            <Table tableName="Overview" subMenu open>
+                            <Table tableName="OVERVIEW" subMenu open>
                                 {TableRWOverview(FIOResultExample, "write")}
                             </Table>
-                            <Table tableName="Clat Percentile" subMenu open>
+                            <Table tableName="COMPLETION LATENCY PERCENTILE" subMenu open>
                                 <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "write")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
                             </Table>
                         </Table>
 
-                        <Table tableName="IO Depth" open>
+                        <Table tableName="TRIM" open>
+                            <Table tableName="OVERVIEW" subMenu open>
+                                {TableRWOverview(FIOResultExample, "trim")}
+                            </Table>
+                            <Table tableName="COMPLETION LATENCY PERCENTILE" subMenu open>
+                                <Graph testList={ClatPercentileList} data={GetDataClatPercentile(FIOResultExample, "trim")} xDatakey="clat_percentile" xLabel="%" yLabel="ms" valueOnGraph={true} />
+                            </Table>
+                        </Table>
+
+                        <Table tableName="IO DEPTH" open>
                             <Graph testList={IODepthList} data={GetDataIODepth(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="io_depth" xLabel="Depth Level" yLabel="%" valueOnGraph={true} />
                         </Table>
 
-                        <Table tableName="Latency" open>
+                        <Table tableName="LATENCY" open>
                             <Graph testList={LatencyPercentileList} data={GetDataLatency(FIOResultExample).filter(dataElement => dataElement.value != 0)} xDatakey="latency" xLabel="ms" yLabel="%" valueOnGraph={true} />
                         </Table>
 
@@ -207,53 +216,53 @@ function TableRWOverview(data: any, rw: string) {
     );
 
     return (
-        <div>
+        <div className="">
             <div className="grid grid-flow-col grid-flow-row grid-cols-4 grid-rows-2 text-sm divide-y divide-x text-center">
-                <div>io</div>
+                <div>Io</div>
                 <div>{io}</div>
-                <div>bw</div>
+                <div>Bandwidth</div>
                 <div>{bw}</div>
-                <div>iops</div>
+                <div>Iops</div>
                 <div>{iops}</div>
-                <div>runtime</div>
+                <div>Runtime</div>
                 <div>{runtime}</div>
             </div>
 
-            <div className="grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-4 text-sm  divide-y divide-x text-center">
+            <div className="p-2 grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-4 text-sm  divide-y divide-x text-center">
                 <div></div>
-                <div>SLAT</div>
-                <div>CLAT</div>
-                <div>LAT</div>
-                <div>MIN</div>
+                <div>Submition Latency</div>
+                <div>Competion Latency</div>
+                <div>Latency</div>
+                <div>Min</div>
                 <div>{slat_min}</div>
                 <div>{clat_min}</div>
                 <div>{lat_min}</div>
-                <div>MAX</div>
+                <div>Max</div>
                 <div>{slat_max}</div>
                 <div>{clat_max}</div>
                 <div>{lat_max}</div>
-                <div>MEAN</div>
+                <div>Mean</div>
                 <div>{slat_mean}</div>
                 <div>{clat_mean}</div>
                 <div>{lat_mean}</div>
-                <div>STDEV</div>
+                <div>Standard Deviation</div>
                 <div>{slat_stdev}</div>
                 <div>{clat_stdev}</div>
                 <div>{lat_stdev}</div>
             </div>
             <div className="text-lg text-center">
-                BW
+                Bandwidth
             </div>
-            <div className="grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-2 text-sm divide-y divide-x text-center">
-                <div>MIN</div>
+            <div className=" grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-2 text-sm divide-y divide-x text-center">
+                <div>Min</div>
                 <div>{bw_min}</div>
-                <div>MAX</div>
+                <div>Max</div>
                 <div>{bw_max}</div>
-                <div>MEAN</div>
+                <div>Mean</div>
                 <div>{bw_mean}</div>
-                <div>STDEV</div>
+                <div>Standard Deviation</div>
                 <div>{bw_stdev}</div>
-                <div>PER</div>
+                <div>Percentage</div>
                 <div>{bw_agg}</div>
             </div>
 
@@ -272,15 +281,23 @@ function TableCPU(data: any) {
     const jobData = data["jobs"][0]
     const cpu_usr = jobData["usr_cpu"] + " %"
     const cpu_sys = jobData["sys_cpu"] + " %"
+    const cpu_ctx = jobData["ctx"]
+    const cpu_majf = jobData["majf"]
+    const cpu_minf = jobData["minf"]
 
     return (
         <div>
-            <div className="grid grid-flow-col grid-flow-row grid-cols-2 grid-rows-2 text-sm divide-y divide-x text-center">
-                <div>USER</div>
+            <div className="grid grid-flow-col grid-flow-row grid-cols-2 grid-rows-5 text-sm divide-y divide-x text-center">
+                <div>User</div>
+                <div>System</div>
+                <div>Context Switches</div>
+                <div>Major Fault</div>
+                <div>Minor Fault</div>
                 <div>{cpu_usr}</div>
-                <div>SYSTEM</div>
                 <div>{cpu_sys}</div>
-
+                <div>{cpu_ctx}</div>
+                <div>{cpu_majf}</div>
+                <div>{cpu_minf}</div>
             </div>
         </div>
     )
@@ -438,11 +455,11 @@ class TableJobs extends Component {
                     }
                 </div>
                 <div className="col-span-3">
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="bw" xLabel="t[s]" yLabel="MB/s" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="iops" xLabel="t[s]" yLabel="iops" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
-                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Bandwidth" xLabel="t[s]" yLabel="MB/s" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="IOPS" xLabel="t[s]" yLabel="iops" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Latency" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Submission Latency" xLabel="t[s]" yLabel="ms" />
+                    <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Completion Latency" xLabel="t[s]" yLabel="ms" />
                     <div className="p-5"/>
                 </div>
             </div>
@@ -479,7 +496,7 @@ function Graph(props: GraphProps) {
                     height={300}
                     data={props.data}
                     margin={{
-                        top: 10,
+                        top: 15,
                         right: 15,
                         left: 10,
                         bottom: 20,
