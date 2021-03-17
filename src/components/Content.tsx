@@ -11,7 +11,7 @@ export default function Content() {
         <div id="CONTENT" className="my-8 flex flex-col space-y-5">
             <Switch>
                 <Route path="/result">
-                    <ResultExplorer />
+                    <ResultExplorer resultID={query.get("id") || ""} />
                 </Route>
 
                 <Route path="/compare">
