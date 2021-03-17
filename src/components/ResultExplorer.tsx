@@ -4,6 +4,9 @@ import { LabelList, LineChart, ReferenceLine, Line, XAxis, YAxis, CartesianGrid,
 import testData from "../assets/testList.json"
 import FIOResultExample from "../assets/FIOResultExample3.16.json"
 
+
+
+
 var randomColor = require('randomcolor');
 //Function wich implements the graphical interface for the details on a specific test
 export default function ResultSummary() {
@@ -14,7 +17,7 @@ export default function ResultSummary() {
                     <div className="space-y-5">
                         <Table tableName="FIO Test Name" open>
                             <Table tableName="FIO user args" subMenu open>{TableTestNameUserArgsValue()}</Table>
-                            <Table tableName="Output" subMenu open>{TableTestNameOutputValue()}</Table>
+                            <Table tableName="Output" subMenu open>{GetDataTestOutput(FIOResultExample)}</Table>
                             <Table tableName="CSV" subMenu open>{TableTestCsvValue()}</Table>
                         </Table>
 
@@ -150,19 +153,12 @@ function TableTestNameUserArgsValue() {
 }
 
 
-function TableTestNameOutputValue() {
+function GetDataTestOutput(data: any) {
     return (
         <div flex-none className="px-5 text-xs ">
-            randread: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=psync, iodepth=16
-            ...
-            fio-3.8
-            Starting 4 processes
-            randread: Laying out IO file (1 file / 512MiB)
-            randread: Laying out IO file (1 file / 512MiB)
-            randread: Laying out IO file (1 file / 512MiB)
-            randread: Laying out IO file (1 file / 512MiB)
-
+            {data}
         </div>
+
     );
 }
 
@@ -460,7 +456,7 @@ class TableJobs extends Component {
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Latency" xLabel="t[s]" yLabel="ms" />
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Submission Latency" xLabel="t[s]" yLabel="ms" />
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 10 + 2} xType="number" xDatakey="name" title="Completion Latency" xLabel="t[s]" yLabel="ms" />
-                    <div className="p-5"/>
+                    <div className="p-5" />
                 </div>
             </div>
         );
