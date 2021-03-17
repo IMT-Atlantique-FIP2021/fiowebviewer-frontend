@@ -381,7 +381,7 @@ type testListType = {
     activated: boolean
 }
 const testList: testListType[] = [
-    { id: "average", color: RandomColor(), activated: true },
+    { id: "average", color: "blue", activated: true },
     { id: "uv", color: RandomColor(), activated: true },
     { id: "pv", color: RandomColor(), activated: true },
     { id: "amt", color: RandomColor(), activated: true }
@@ -443,6 +443,7 @@ class TableJobs extends Component {
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="lat" xLabel="t[s]" yLabel="ms" />
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="slat" xLabel="t[s]" yLabel="ms" />
                     <Graph testList={this.state.activatedValue} data={this.state.data} xTickCount={this.state.data.length / 2 - 2} xType="number" xDatakey="name" title="clat" xLabel="t[s]" yLabel="ms" />
+                    <div className="p-5"/>
                 </div>
             </div>
         );
@@ -478,10 +479,10 @@ function Graph(props: GraphProps) {
                     height={300}
                     data={props.data}
                     margin={{
-                        top: 15,
+                        top: 10,
                         right: 15,
                         left: 10,
-                        bottom: 35,
+                        bottom: 20,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
