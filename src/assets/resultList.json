@@ -1,22 +1,26 @@
-{
-    "result1": {
+[
+    {
+        "id": "result1",
         "name": "FIO Mock-up test 1",
         "tags": ["job1", "INFRA-TEST", "INPUT", "CEPH-DATABASE"],
-        "submitted_at": "10/02/2021 22:00"
-    },
-    "result2": {
+        "time": "10/02/2021 22:00"
+    }, 
+    {
+        "id": "result2",
         "name": "FIO Mock-up test 2",
         "tags": ["job1", "INFRA-CLIENT", "INPUT", "OUTPUT", "CEPH-WEB", "Testing"],
-        "submitted_at": "15/01/2021 21:00"
+        "time": "15/01/2021 21:00"
     },
-    "result3": {
+    {
+        "id": "result3",
         "name": " FIO Mock-up test 3 - Long text that need to be truncated ",
         "tags": ["job3", "INFRA-OVH", "OUTPUT", "CEPH-STORAGE", "Production"],
-        "submitted_at": "30/03/2020 19:30"
+        "time": "30/03/2020 19:30"
     },
-    "result4": {
+    {
+        "id": "result4",
         "name": " FIO Mock-up test 4",
         "tags": ["NewJob"],
-        "submitted_at": "30/03/2020 19:30"
+        "time": "30/03/2020 19:30"
     }
-}
+]

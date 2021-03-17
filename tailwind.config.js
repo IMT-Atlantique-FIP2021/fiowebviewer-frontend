@@ -1,16 +1,30 @@
 module.exports = {
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: 'class',
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  darkMode: 'class', // 'media' or 'class'
   theme: {
     extend: {
       colors: {
-        ovh_blue: '#010e9b',
-        fip_pink: '#ffd1dc',
+        blue: {
+          'ovh-dark': '#010E9B',
+          'ovh-light': '#2563EB',
+        },
+        custom: {
+          'ovh-sec-dark': '#9B8E01',
+          'ovh-sec-light': '#EBAD25',
+        },
+        pink: {
+          'fip': '#FFD1DC'
+        }
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['hover'],
+      backgroundColor: ['odd', 'disabled'],
+      opacity: ['disabled'],
+      rotate: ['group-hover'],
+    }
   },
   plugins: [
     require('@tailwindcss/forms'), 
