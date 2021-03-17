@@ -1,9 +1,6 @@
 import { Component } from "react";
-import { Tag, XCircle, PlusCircle, Loader } from "react-feather";
+import { Tag, XCircle, PlusCircle, Loader, Coffee } from "react-feather";
 import { Link } from "react-router-dom";
-import ResultListExamples from "../assets/resultList.json";
-
-// var _ = require("lodash");
 
 interface ResultType {
     id: string;
@@ -18,72 +15,69 @@ interface ResultState extends ResultType {
 
 export default class Table extends Component {
     state: {
-        isFetching: boolean;
+        loading: boolean;
+        fetching: boolean;
         results: ResultState[];
     };
-    // timer: NodeJS.Timeout | null;
+    timer: NodeJS.Timeout | null;
 
     constructor(props: any) {
         super(props);
-        this.fetchResults = this.fetchResults.bind(this);
         this.state = {
-            isFetching: false,
+            loading: true,
+            fetching: false,
             results: [],
         };
-        // this.timer = null;
+        this.timer = null;
     }
 
-    // FIXME: Bug when result failed... dont display empty result!
-    fetchResults() {
-        if (this.state.isFetching) return;
-
-        this.setState({ ...this.state, isFetching: true });
-        fetch("/api/result/")
-            .then((response) => response.json())
-            .catch((e) => {
-                console.log(e);
-                this.setState({ ...this.state, isFetching: false });
-                return ResultListExamples;
-            })
-            .then((resultList: any[]) => {
-                let resultListFormated: ResultType[] = [];
-
-                resultList.forEach((result: any) =>
-                    resultListFormated.push({
-                        id: result["id"],
-                        name: result["name"],
-                        tags: result["tags"],
-                        submitted_at: result["time"]
-                    })
-                );
-
-                return resultListFormated.map((r: ResultType) => ({
-                    ...r,
-                    selected: false,
-                }));
-            })
-            .then((resultList: ResultState[]) => {
-                this.setState({ results: resultList, isFetching: false });
-            });
+    getCurrentResultSelectedState(id: string) {
+        return (
+            this.state.results.filter((sr) => sr.id === id)[0]?.selected ||
+            false
+        );
     }
 
-    componentDidMount() {
-        this.fetchResults();
-        // this.timer = setInterval(() => this.fetchResults(), 1000);
+    async fetchResults() {
+        if (this.state.fetching) return;
+        else this.setState({ ...this.state, isFetching: true });
+
+        const get_result_list_url = "/api/result/";
+        const response = await fetch(get_result_list_url);
+        const data = await response.json();
+
+        const results: ResultState[] = data.map((r: any) => ({
+            id: r.id,
+            name: r.name,
+            tags: r.tags,
+            submitted_at: r.time,
+            selected: this.getCurrentResultSelectedState(r.id),
+        }));
+
+        this.setState({ loading: false, isFetching: false, results: results });
     }
 
-    // componentWillUnmount() {
-    //     if (this.timer) {
-    //         clearInterval(this.timer);
-    //         this.timer = null;
-    //     }
-    // }
+    async componentDidMount() {
+        await this.fetchResults();
+        this.timer = setInterval(() => this.fetchResults(), 1000);
+    }
+
+    componentWillUnmount() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+    }
 
     isAllSelected() {
         return (
             this.state.results.filter((r) => r.selected).length ===
                 this.state.results.length && this.state.results.length !== 0
         );
+    }
+
+    selectedResult() {
+        return this.state.results.filter((r) => r.selected).map((r) => r.id);
     }
 
     handleOnCheckbox_SelectAll() {
@@ -102,44 +96,71 @@ export default class Table extends Component {
     }
 
     render() {
-        const tableHeader = TableHeader({
-            checked: this.isAllSelected(),
-            onChange: this.handleOnCheckbox_SelectAll.bind(this),
-        });
-
-        const tableLines = this.state.results.map((result) => (
-            <TableLine
-                key={result.id}
-                result={result}
-                checkbox={{
-                    checked: result.selected,
-                    onChange: this.handleOnCheckbox_Select.bind(
-                        this,
-                        result.id
-                    ),
-                }}
-            />
-        ));
-
-        const selectedResult = this.state.results
-            .filter((r) => r.selected)
-            .map((r) => r.id);
-
+        const results = this.state.results;
         return (
             <div>
                 <table className="table-fixed w-full">
-                    {tableHeader}
-                    <tbody>{tableLines}</tbody>
+                    {TableHeader({
+                        checked: this.isAllSelected(),
+                        onChange: this.handleOnCheckbox_SelectAll.bind(this),
+                    })}
+                    <tbody>
+                        {results.map((r) => (
+                            <TableLine
+                                key={r.id}
+                                result={r}
+                                checkbox={{
+                                    checked: r.selected,
+                                    onChange: this.handleOnCheckbox_Select.bind(
+                                        this,
+                                        r.id
+                                    ),
+                                }}
+                            />
+                        ))}
+                    </tbody>
                 </table>
-
-                {tableLines.length ? (
-                <div className="flex justify-evenly p-4">
-                    { TableCompareButton(selectedResult) }
-                    { TableDeleteButton(selectedResult) }
-                </div>
-                ) : (
-                    <TableLoadingLine />
+                {TableContent(
+                    this.state.loading,
+                    this.state.results,
+                    this.selectedResult()
                 )}
+            </div>
+        );
+    }
+}
+
+function TableContent(
+    loading: boolean,
+    results: ResultState[],
+    selectedResult: string[]
+) {
+    if (loading) {
+        // Currently fetching results
+        return (
+            <div className="flex flex-row justify-center p-4 animate-pulse">
+                <Loader className="animate-spin mr-4" />
+                <div className="select-none">Fetching results...</div>
+            </div>
+        );
+    }
+
+    if (results.length === 0) {
+        // Currently no result to show
+        return (
+            <div className="flex flex-row justify-center p-4 opacity-70">
+                <Coffee className="mr-4" />
+                <div className="select-none">No result available...</div>
+            </div>
+        );
+    }
+
+    if (results) {
+        // Currently with results
+        return (
+            <div className="flex justify-evenly p-4">
+                {TableCompareButton(selectedResult)}
+                {TableDeleteButton(selectedResult)}
             </div>
         );
     }
@@ -171,15 +192,6 @@ type TableLineProps = {
     result: ResultType;
     checkbox: CheckboxProps;
 };
-
-function TableLoadingLine() {
-    return (
-        <div className="flex flex-row justify-center p-4 animate-pulse">
-            <Loader className="animate-spin mr-4" />
-            <div className="select-none">Fetching results...</div>
-        </div>
-    );
-}
 
 function TableLine(props: TableLineProps) {
     return (
