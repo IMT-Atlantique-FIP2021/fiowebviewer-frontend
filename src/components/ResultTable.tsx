@@ -133,7 +133,10 @@ export default class Table extends Component {
                 </table>
 
                 {tableLines.length ? (
-                    TableCompareButton(selectedResult)
+                <div className="flex justify-evenly p-4">
+                    { TableCompareButton(selectedResult) }
+                    { TableDeleteButton(selectedResult) }
+                </div>
                 ) : (
                     <TableLoadingLine />
                 )}
@@ -274,21 +277,42 @@ function TableCompareButton(selectedResults: string[]) {
     );
 
     return (
-        <div className="flex justify-center p-4">
-            <Link
-                to={{
-                    pathname: "/compare",
-                    search: queryParams,
-                }}
+        <Link
+            to={{
+                pathname: "/compare",
+                search: queryParams,
+            }}
+        >
+            <button
+                {...{ disabled: selectedResults.length <= 1 }}
+                className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
             >
-                <button
-                    {...{ disabled: selectedResults.length <= 1 }}
-                    className="disabled:opacity-50 disabled:bg-gray-400 bg-blue-ovh-light hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
-                >
-                    Compare {selectedResults.length} result
-                    {selectedResults.length > 1 ? "s" : ""}
-                </button>
-            </Link>
-        </div>
+                Compare {selectedResults.length} result
+                {selectedResults.length > 1 ? "s" : ""}
+            </button>
+        </Link>
+    );
+}
+
+function TableDeleteButton(selectedResults: string[]) {
+    const queryParams = "?".concat(
+        selectedResults.map((r) => "id=" + r).join("&")
+    );
+
+    return (
+        <Link
+            to={{
+                pathname: "/delete",
+                search: queryParams,
+            }}
+        >
+            <button
+                {...{ disabled: selectedResults.length <= 0 }}
+                className="disabled:opacity-50 disabled:bg-gray-400 bg-red-600 hover:opacity-100 opacity-80 p-2 w-64 font-semibold border rounded text-white"
+            >
+                Delete {selectedResults.length} result
+                {selectedResults.length > 1 ? "s" : ""}
+            </button>
+        </Link>
     );
 }
