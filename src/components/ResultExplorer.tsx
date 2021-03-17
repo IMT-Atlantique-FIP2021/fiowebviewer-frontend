@@ -230,7 +230,7 @@ function TableRWOverview(data: any, rw: string) {
 
             <div className="p-2 grid grid-flow-col grid-flow-row grid-cols-5 grid-rows-4 text-sm  divide-y divide-x text-center">
                 <div></div>
-                <div>Submition Latency</div>
+                <div>Submission Latency</div>
                 <div>Competion Latency</div>
                 <div>Latency</div>
                 <div>Min</div>
