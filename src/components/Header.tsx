@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import FIOLogo from "../assets/logo.svg";
-import ThemeToggle from "./ThemeToggle";
+// import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
     return (
