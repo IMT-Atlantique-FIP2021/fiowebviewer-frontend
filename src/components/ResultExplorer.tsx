@@ -57,25 +57,25 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                     <div className="grid grid-cols-1 lg:grid-cols-2 lg:space-x-5">
                         <div className="space-y-5">
                             <Table tableName={"RESULT\: "+this.state.data["name"]} open>
-                                <Table tableName="FIO user args" subMenu open>
+                                <Table tableName="FIO user args" subMenu >
                                     {TableTestNameUserArgsValue()}
                                 </Table>
-                                <Table tableName="Output" subMenu open>
+                                <Table tableName="Output" subMenu >
                                     {GetDataTestOutput(this.state.data)}
                                 </Table>
-                                <Table tableName="CSV" subMenu open>
+                                <Table tableName="CSV" subMenu >
                                     {TableTestCsvValue()}
                                 </Table>
                             </Table>
 
-                            <Table tableName="READ" open>
-                                <Table tableName="OVERVIEW" subMenu open>
+                            <Table tableName="READ" >
+                                <Table tableName="OVERVIEW" subMenu >
                                     {TableRWOverview(this.state.data, "read")}
                                 </Table>
                                 <Table
                                     tableName="COMPLETION LATENCY PERCENTILE"
                                     subMenu
-                                    open
+                                    
                                 >
                                     <Graph
                                         testList={ClatPercentileList}
@@ -91,14 +91,14 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                                 </Table>
                             </Table>
 
-                            <Table tableName="WRITE" open>
-                                <Table tableName="OVERVIEW" subMenu open>
+                            <Table tableName="WRITE" >
+                                <Table tableName="OVERVIEW" subMenu >
                                     {TableRWOverview(this.state.data, "write")}
                                 </Table>
                                 <Table
                                     tableName="COMPLETION LATENCY PERCENTILE"
                                     subMenu
-                                    open
+                                    
                                 >
                                     <Graph
                                         testList={ClatPercentileList}
@@ -114,14 +114,14 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                                 </Table>
                             </Table>
 
-                            <Table tableName="TRIM" open>
-                                <Table tableName="OVERVIEW" subMenu open>
+                            <Table tableName="TRIM" >
+                                <Table tableName="OVERVIEW" subMenu >
                                     {TableRWOverview(this.state.data, "trim")}
                                 </Table>
                                 <Table
                                     tableName="COMPLETION LATENCY PERCENTILE"
                                     subMenu
-                                    open
+                                    
                                 >
                                     <Graph
                                         testList={ClatPercentileList}
@@ -137,7 +137,7 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                                 </Table>
                             </Table>
 
-                            <Table tableName="IO DEPTH" open>
+                            <Table tableName="IO DEPTH" >
                                 <Graph
                                     testList={IODepthList}
                                     data={GetDataIODepth(
@@ -152,7 +152,7 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                                 />
                             </Table>
 
-                            <Table tableName="LATENCY" open>
+                            <Table tableName="LATENCY" >
                                 <Graph
                                     testList={LatencyPercentileList}
                                     data={GetDataLatency(
@@ -167,12 +167,12 @@ export default class ResultSummary extends Component<ResultSummaryType> {
                                 />
                             </Table>
 
-                            <Table tableName="CPU" open>
+                            <Table tableName="CPU" >
                                 {TableCPU(this.state.data)}
                             </Table>
                         </div>
                         <div className="space-y-5 py-5 lg:py-0">
-                            <Table tableName="Jobs" open>
+                            <Table tableName="Jobs" >
                                 <TableJobs />
                             </Table>
                         </div>
