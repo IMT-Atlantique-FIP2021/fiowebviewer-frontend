@@ -17,9 +17,9 @@ export default function NavBar() {
 
                     <div className="flex-grow"></div>
 
-                    <a href="/docs/" >
+                    <Link to="/docs">
                         <NavBarItem icon={Book} text="Docs" />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

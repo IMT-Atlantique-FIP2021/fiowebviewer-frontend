@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import ResultTable from "./ResultTable";
 import ResultExplorer from "./ResultExplorer";
 import ResultCompare from "./ResultCompare";
@@ -10,6 +10,10 @@ export default function Content() {
     return (
         <div id="CONTENT" className="my-8 flex flex-col space-y-5">
             <Switch>
+                <Route path="/docs">
+                    <Redirect to="/docs"/>
+                </Route>
+
                 <Route path="/result">
                     <ResultExplorer resultID={query.get("id") || ""} />
                 </Route>
