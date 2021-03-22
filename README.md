@@ -8,59 +8,59 @@
 <!-- Name -->
 <h1 align="center">
   <a href="https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/"><b>FLEX</b> Flexible I/O Explorer</a>
+  </br>
+  <i>Frontend repository</i>
 </h1>
+
+[![React](https://img.shields.io/badge/JS_library-React-blue)][WS_REACT]
+[![Tailwindcss](https://img.shields.io/badge/CSS_library-Tailwindcss-brightgreen)][WS_TWCSS]
+
+> React modules :
+> 
+> [![ReactCRA](https://img.shields.io/badge/Create_React_App-blue)][WS_REACT_CRA]
+> [![ReactRouter](https://img.shields.io/badge/React_Router-blue)][WS_REACT_ROUTER]
+> [![ReactFeather](https://img.shields.io/badge/Feather_Icons-blue)][WS_REACT_FEATHER]
+
+> Tailwindcss plugins :
+> 
+> [![FORMS](https://img.shields.io/badge/Forms-brightgreen)][WS_TWCSS_FORMS]
+> [![SCROLLBARS](https://img.shields.io/badge/Scrollbar-brightgreen)][WS_TWCSS_SCROLLBAR]
+
+## Screenshots
+
+![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.gif)
 
 ## Installation & Usage
 
+- Installer [NodeJS 14.X LTS](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
+- Cloner le répertoire
+- Initialiser les paquets npm
+- Démarrer le serveur de développement
+
 ```shell
+$ git clone https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend
+$ cd fiowebviewer-frontend/
 $ npm install
-...
 $ npm start
 ...
 ```
 
-> If error start showing in console about memory, check [issue #12](https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/issues/12).
+> :warning: En cas de problème au démarrage du serveur de développement, indiquant dans la console des erreurs relatives à une allocation mémoire insufisante, aller voir l'[Issue #12](https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend/issues/12).
 
-<!-- See the [**Documentation**][ProjectDoc] for an introduction, usage information, and examples. -->
+## How to contribute
 
-## Screenshots
+> TODO...
 
-<!-- ![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.png) -->
-![FLEX Dashboard](docs/doc-files/FLEX_Dashboard.gif)
-
-## Built With
-
-- Frontend
-  - [React][ReactDoc] (JavaScript Framework)
-    - [React Router][ReactP_Router]
-  - [Tailwindcss][TailwindDoc] (CSS Framework)
-    - [tailwind-scrollbar][TWP_scroll] (plugin)
-- Backend
-  - [Flask][FlaskDoc] (Python Framework) | _Moving to [FastAPI][FastAPIDoc]?_
-- Tools
-  - virtualenv
-  - npm
-  - [Create-React-App][CRADoc] (Frontend boilerplate)
-  - [Feather][FeatherIcons] (SVG Icons)
-- Browser dev tools
-  - [React DevTools][ReactDevTool]
-
-# Ideas
-
-To sort:
-
-- [Bootstrap table examples](https://examples.bootstrap-table.com/)
-- [Getting started: Flask+React](https://blog.learningdollars.com/2019/11/29/how-to-serve-a-reactapp-with-a-flask-server/)
 
 <!-- URL Index -->
 
+[WS_REACT]: https://reactjs.org/docs/getting-started.html
+[WS_REACT_ROUTER]: https://reactrouter.com/web/guides/quick-start
+[WS_REACT_FEATHER]: https://feathericons.com/
+[WS_REACT_CRA]: https://create-react-app.dev/
+
+[WS_TWCSS]: https://tailwindcss.com/docs
+[WS_TWCSS_FORMS]: https://github.com/tailwindlabs/tailwindcss-forms
+[WS_TWCSS_SCROLLBAR]: https://github.com/adoxography/tailwind-scrollbar
+
 [ProjectDoc]: ./docs/project_setup.md
-[ReactDoc]: https://reactjs.org/docs/getting-started.html
-[TailwindDoc]: https://tailwindcss.com/docs
-[FlaskDoc]: https://flask.palletsprojects.com/en/1.1.x/
-[FastAPIDoc]: https://fastapi.tiangolo.com/
-[CRADoc]: https://github.com/vitejs/vite
-[FeatherIcons]: https://feathericons.com/
-[ReactDevTool]: https://addons.mozilla.org/en-US/firefox/addon/react-devtools/
-[TWP_scroll]: https://github.com/adoxography/tailwind-scrollbar
-[ReactP_Router]: https://reactrouter.com/web/example/basic
